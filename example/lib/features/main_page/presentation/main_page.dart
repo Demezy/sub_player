@@ -32,15 +32,11 @@ class MainPage extends StatelessWidget {
                     itemWidth: 300,
                     children: List.generate(
                       10,
-                      (index) => Padding(
-                        key: Key('$index'),
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          color: Color.lerp(
-                            Colors.amber,
-                            Colors.red,
-                            index / 10,
-                          ),
+                      (index) => Container(
+                        color: Color.lerp(
+                          Colors.amber,
+                          Colors.red,
+                          index / 10,
                         ),
                       ),
                     ),
@@ -54,15 +50,11 @@ class MainPage extends StatelessWidget {
                     itemWidth: 160,
                     children: List.generate(
                       10,
-                      (index) => Padding(
-                        key: Key('$index'),
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          color: Color.lerp(
-                            Colors.blue,
-                            Colors.purple,
-                            index / 10,
-                          ),
+                      (index) => Container(
+                        color: Color.lerp(
+                          Colors.blue,
+                          Colors.purple,
+                          index / 10,
                         ),
                       ),
                     ),
@@ -76,15 +68,11 @@ class MainPage extends StatelessWidget {
                     itemWidth: 160,
                     children: List.generate(
                       10,
-                      (index) => Padding(
-                        key: Key('$index'),
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          color: Color.lerp(
-                            Colors.green,
-                            Colors.cyan,
-                            index / 10,
-                          ),
+                      (index) => Container(
+                        color: Color.lerp(
+                          Colors.green,
+                          Colors.cyan,
+                          index / 10,
                         ),
                       ),
                     ),
