@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'animated_horisontal_scroll_view.dart';
+import 'section_heading.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: Center(
         child: ListView(
@@ -26,7 +26,10 @@ class MainPage extends StatelessWidget {
                 ),
               ),
             ),
-            const Text('title1'),
+            SectionHeading(
+              title: 'title',
+              onPressed: () {},
+            ),
             AnimatedHorizontalListView(
               height: 300,
               itemWidth: 160,
@@ -41,7 +44,10 @@ class MainPage extends StatelessWidget {
                 ),
               ),
             ),
-            const Text('title2'),
+            SectionHeading(
+              title: 'title2',
+              onPressed: () {},
+            ),
             AnimatedHorizontalListView(
               height: 300,
               itemWidth: 160,
