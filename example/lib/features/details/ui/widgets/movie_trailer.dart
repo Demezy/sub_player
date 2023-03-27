@@ -21,6 +21,7 @@ class _MovieTrailerState extends State<MovieTrailer> {
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     )
       ..setLooping(true)
+      ..setVolume(0)
       ..addListener(() {
         setState(() {});
       })
