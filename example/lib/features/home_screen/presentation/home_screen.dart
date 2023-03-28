@@ -10,15 +10,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) async {
-          if (value != 0) {
-            final _ = await showOkAlertDialog(
-              context: context,
-              title: 'Demo app',
-              message: 'This functional is not implemented in demo.',
-            );
-          }
-        },
+        onTap: (value) => value != 0
+            ? showOkAlertDialog(
+                context: context,
+                title: 'Demo app',
+                message: 'This functional is not implemented in demo.',
+              )
+            : null,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

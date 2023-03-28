@@ -11,9 +11,9 @@ class AnimatedScrollViewItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final animationController =
-        useAnimationController(duration: const Duration(milliseconds: 300))
-          ..forward();
+    final animationController = useAnimationController(
+      duration: const Duration(milliseconds: 300),
+    )..forward();
     final scaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
       CurvedAnimation(
         parent: animationController,
