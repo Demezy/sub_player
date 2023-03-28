@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class AnimatedScrollViewItem extends StatefulWidget {
+class AnimatedScrollViewItem extends HookWidget {
   const AnimatedScrollViewItem({
     Key? key,
     required this.child,
@@ -9,41 +10,19 @@ class AnimatedScrollViewItem extends StatefulWidget {
   final Widget child;
 
   @override
-  State<AnimatedScrollViewItem> createState() => _AnimatedScrollViewItemState();
-}
-
-class _AnimatedScrollViewItemState extends State<AnimatedScrollViewItem>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _animationController;
-  late final Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    )..forward();
-
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
+  Widget build(BuildContext context) {
+    final animationController =
+        useAnimationController(duration: const Duration(milliseconds: 300))
+          ..forward();
+    final scaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
       CurvedAnimation(
-        parent: _animationController,
+        parent: animationController,
         curve: Curves.easeInOut,
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return ScaleTransition(
-      scale: _scaleAnimation,
-      child: widget.child,
+      scale: scaleAnimation,
+      child: child,
     );
   }
 }
