@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'animated_horisontal_scroll_view.dart';
 import 'section_heading.dart';
@@ -11,11 +12,13 @@ class MainPage extends StatelessWidget {
     return Center(
       child: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             pinned: true,
-            // kion logo
-            title: Text('Kion'),
-            actions: [
+            title: SvgPicture.asset(
+              'assets/svg/kion_logo.svg',
+              semanticsLabel: 'kion logo',
+            ),
+            actions: const [
               Padding(
                 padding: EdgeInsets.only(right: 12.0),
                 child: Icon(Icons.settings),
