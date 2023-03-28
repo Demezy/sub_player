@@ -9,6 +9,7 @@ import 'animated_horisontal_scroll_view.dart';
 part './section_heading.dart';
 part './see_all_button.dart';
 part './banner_film.dart';
+part './card_film.dart';
 
 class MainPage extends ConsumerWidget {
   const MainPage({super.key});
@@ -77,6 +78,7 @@ class MainPage extends ConsumerWidget {
                     ),
                   ),
                 ),
+
                 SectionHeading(
                   title: 'Popular now',
                   onPressed: () {},
@@ -85,13 +87,36 @@ class MainPage extends ConsumerWidget {
                 AnimatedHorizontalListView(
                   height: 300,
                   itemWidth: 160,
-                  children: List.generate(
-                    10,
-                    (index) => Container(
-                      color: Color.lerp(
-                        Colors.blue,
-                        Colors.purple,
-                        index / 10,
+                  children: popularFilms.when(
+                    data: (films) => films.isEmpty
+                        ? const [
+                            Center(
+                              child: Text('empty'),
+                            )
+                          ]
+                        : films.map((film) => CardFilm(film: film)).toList(),
+                    error: (_, __) => [
+                      Container(
+                        color: Colors.red[200],
+                        child: Center(
+                          child: Text(
+                            'error',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(color: Colors.amber),
+                          ),
+                        ),
+                      )
+                    ],
+                    loading: () => List<Widget>.generate(
+                      10,
+                      (index) => Container(
+                        color: Color.lerp(
+                          Colors.amber,
+                          Colors.red,
+                          index / 10,
+                        ),
                       ),
                     ),
                   ),
@@ -104,13 +129,36 @@ class MainPage extends ConsumerWidget {
                 AnimatedHorizontalListView(
                   height: 300,
                   itemWidth: 160,
-                  children: List.generate(
-                    10,
-                    (index) => Container(
-                      color: Color.lerp(
-                        Colors.green,
-                        Colors.cyan,
-                        index / 10,
+                  children: popularFilms.when(
+                    data: (films) => films.isEmpty
+                        ? const [
+                            Center(
+                              child: Text('empty'),
+                            )
+                          ]
+                        : films.map((film) => CardFilm(film: film)).toList(),
+                    error: (_, __) => [
+                      Container(
+                        color: Colors.red[200],
+                        child: Center(
+                          child: Text(
+                            'error',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(color: Colors.amber),
+                          ),
+                        ),
+                      )
+                    ],
+                    loading: () => List<Widget>.generate(
+                      10,
+                      (index) => Container(
+                        color: Color.lerp(
+                          Colors.amber,
+                          Colors.red,
+                          index / 10,
+                        ),
                       ),
                     ),
                   ),
