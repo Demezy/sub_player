@@ -8,11 +8,14 @@ class DetailsMobileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    final film = arguments['film'];
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {},
+          onPressed: () => Navigator.pop(context),
         ),
         elevation: 0,
       ),
@@ -21,19 +24,27 @@ class DetailsMobileView extends StatelessWidget {
           Stack(
             alignment: AlignmentDirectional.bottomCenter,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(bottom: 20.0),
-                child: MovieTrailer(),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: MovieTrailer(
+                  trailerLink: film.filmTrailerLink,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Container(
+                    SizedBox(
                       height: 160,
                       width: 100,
-                      color: Colors.green,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          film.filmPosterLink,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       width: 20,
@@ -44,7 +55,7 @@ class DetailsMobileView extends StatelessWidget {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * .5,
                           child: Text(
-                            'Lorem ipsum dolor sit amet',
+                            film.filmTitle,
                             softWrap: true,
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
@@ -62,7 +73,7 @@ class DetailsMobileView extends StatelessWidget {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: ' 9.4  ',
+                                  text: ' ${film.filmRating.toString()} ',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 const WidgetSpan(
@@ -73,7 +84,7 @@ class DetailsMobileView extends StatelessWidget {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: ' 5.5  ',
+                                  text: ' ${film.filmIMBdRating.toString()} ',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 const WidgetSpan(
@@ -84,7 +95,8 @@ class DetailsMobileView extends StatelessWidget {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: ' 8.0',
+                                  text:
+                                      ' ${film.filmKinopoiskRating.toString()} ',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
@@ -104,7 +116,7 @@ class DetailsMobileView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pushNamed(context, '/player'),
               child: const Text('Смотреть'),
             ),
           ),
@@ -114,7 +126,7 @@ class DetailsMobileView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: ReadMoreText(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+              film.filmDescription,
               trimLines: 5,
               colorClickableText: Theme.of(context).primaryColor,
               trimMode: TrimMode.Line,
@@ -132,7 +144,7 @@ class DetailsMobileView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '2012 | Россия | 1 сезон\nДрама, Исторический | 12+',
+                  film.filmLabels,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const Spacer(),
@@ -186,14 +198,17 @@ class DetailsMobileView extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.white),
+                        InkWell(
+                          onTap: () => Navigator.pushNamed(context, '/player'),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.white),
+                            ),
+                            padding: const EdgeInsets.all(12),
+                            width: double.infinity,
+                            child: const Icon(Icons.bookmark_add_outlined),
                           ),
-                          padding: const EdgeInsets.all(12),
-                          width: double.infinity,
-                          child: const Icon(Icons.bookmark_add_outlined),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),

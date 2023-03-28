@@ -9,6 +9,9 @@ class DetailsWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    final film = arguments['film'];
     return Scaffold(
       body: Stack(
         alignment: AlignmentDirectional.topEnd,
@@ -18,7 +21,9 @@ class DetailsWebView extends StatelessWidget {
                 EdgeInsets.only(right: MediaQuery.of(context).size.width * .03),
             child: SizedBox(
               width: MediaQuery.of(context).size.width * .76,
-              child: const MovieTrailer(),
+              child: MovieTrailer(
+                trailerLink: film.filmTrailerLink,
+              ),
             ),
           ),
           Padding(
