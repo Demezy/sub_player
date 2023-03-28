@@ -10,9 +10,11 @@ class BannerFilm extends StatelessWidget {
     return Stack(
     alignment: Alignment.bottomRight,
       children: [
-        Image.network(
-          film.filmPosterLink,
-          fit: BoxFit.cover,
+        Positioned.fill(
+          child: Image.network(
+            film.filmPosterLink,
+            fit: BoxFit.cover,
+          ),
         ),
         const Padding(
           padding: EdgeInsets.all(8.0),

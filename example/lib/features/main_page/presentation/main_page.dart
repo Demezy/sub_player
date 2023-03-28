@@ -42,8 +42,8 @@ class MainPage extends ConsumerWidget {
               [
                 // big baner films
                 AnimatedHorizontalListView(
-                  height: 200,
-                  itemWidth: 300,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  itemWidth: MediaQuery.of(context).size.width * 0.9,
                   children: bannerFilms.when(
                     data: (films) => films.isEmpty
                         ? const [
