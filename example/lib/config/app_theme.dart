@@ -142,7 +142,7 @@ class AppTheme {
       style: ButtonStyle(
         textStyle: MaterialStateProperty.all<TextStyle?>(
           GoogleFonts.mulish(
-            color: const Color(0xff00A19A),
+            color: const Color(0xff9c9066),
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
