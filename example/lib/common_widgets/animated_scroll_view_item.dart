@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+part of 'animated_horizontal_scroll_view.dart';
 
 class AnimatedScrollViewItem extends HookWidget {
   const AnimatedScrollViewItem({

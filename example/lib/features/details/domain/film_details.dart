@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'film_details.freezed.dart';
+
 part 'film_details.g.dart';
 
 @freezed
@@ -11,11 +12,11 @@ class FilmDetails with _$FilmDetails {
     required double filmRating,
     required double filmIMBdRating,
     required double filmKinopoiskRating,
-    required List<String> filmLabels,
+    required String filmLabels,
     required String filmTrailerLink,
     required String filmPosterLink,
   }) = _FilmDetails;
 
-  factory FilmDetails.fromJson(Map<String, Object?> json)
-  => _$FilmDetailsFromJson(json);
+  factory FilmDetails.fromJson(Map<String, Object?> json) =>
+      _$FilmDetailsFromJson(json);
 }

@@ -25,7 +25,7 @@ mixin _$FilmDetails {
   double get filmRating => throw _privateConstructorUsedError;
   double get filmIMBdRating => throw _privateConstructorUsedError;
   double get filmKinopoiskRating => throw _privateConstructorUsedError;
-  List<String> get filmLabels => throw _privateConstructorUsedError;
+  String get filmLabels => throw _privateConstructorUsedError;
   String get filmTrailerLink => throw _privateConstructorUsedError;
   String get filmPosterLink => throw _privateConstructorUsedError;
 
@@ -47,7 +47,7 @@ abstract class $FilmDetailsCopyWith<$Res> {
       double filmRating,
       double filmIMBdRating,
       double filmKinopoiskRating,
-      List<String> filmLabels,
+      String filmLabels,
       String filmTrailerLink,
       String filmPosterLink});
 }
@@ -98,7 +98,7 @@ class _$FilmDetailsCopyWithImpl<$Res, $Val extends FilmDetails>
       filmLabels: null == filmLabels
           ? _value.filmLabels
           : filmLabels // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as String,
       filmTrailerLink: null == filmTrailerLink
           ? _value.filmTrailerLink
           : filmTrailerLink // ignore: cast_nullable_to_non_nullable
@@ -125,7 +125,7 @@ abstract class _$$_FilmDetailsCopyWith<$Res>
       double filmRating,
       double filmIMBdRating,
       double filmKinopoiskRating,
-      List<String> filmLabels,
+      String filmLabels,
       String filmTrailerLink,
       String filmPosterLink});
 }
@@ -172,9 +172,9 @@ class __$$_FilmDetailsCopyWithImpl<$Res>
           : filmKinopoiskRating // ignore: cast_nullable_to_non_nullable
               as double,
       filmLabels: null == filmLabels
-          ? _value._filmLabels
+          ? _value.filmLabels
           : filmLabels // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as String,
       filmTrailerLink: null == filmTrailerLink
           ? _value.filmTrailerLink
           : filmTrailerLink // ignore: cast_nullable_to_non_nullable
@@ -196,10 +196,9 @@ class _$_FilmDetails implements _FilmDetails {
       required this.filmRating,
       required this.filmIMBdRating,
       required this.filmKinopoiskRating,
-      required final List<String> filmLabels,
+      required this.filmLabels,
       required this.filmTrailerLink,
-      required this.filmPosterLink})
-      : _filmLabels = filmLabels;
+      required this.filmPosterLink});
 
   factory _$_FilmDetails.fromJson(Map<String, dynamic> json) =>
       _$$_FilmDetailsFromJson(json);
@@ -214,14 +213,8 @@ class _$_FilmDetails implements _FilmDetails {
   final double filmIMBdRating;
   @override
   final double filmKinopoiskRating;
-  final List<String> _filmLabels;
   @override
-  List<String> get filmLabels {
-    if (_filmLabels is EqualUnmodifiableListView) return _filmLabels;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_filmLabels);
-  }
-
+  final String filmLabels;
   @override
   final String filmTrailerLink;
   @override
@@ -247,8 +240,8 @@ class _$_FilmDetails implements _FilmDetails {
                 other.filmIMBdRating == filmIMBdRating) &&
             (identical(other.filmKinopoiskRating, filmKinopoiskRating) ||
                 other.filmKinopoiskRating == filmKinopoiskRating) &&
-            const DeepCollectionEquality()
-                .equals(other._filmLabels, _filmLabels) &&
+            (identical(other.filmLabels, filmLabels) ||
+                other.filmLabels == filmLabels) &&
             (identical(other.filmTrailerLink, filmTrailerLink) ||
                 other.filmTrailerLink == filmTrailerLink) &&
             (identical(other.filmPosterLink, filmPosterLink) ||
@@ -264,7 +257,7 @@ class _$_FilmDetails implements _FilmDetails {
       filmRating,
       filmIMBdRating,
       filmKinopoiskRating,
-      const DeepCollectionEquality().hash(_filmLabels),
+      filmLabels,
       filmTrailerLink,
       filmPosterLink);
 
@@ -289,7 +282,7 @@ abstract class _FilmDetails implements FilmDetails {
       required final double filmRating,
       required final double filmIMBdRating,
       required final double filmKinopoiskRating,
-      required final List<String> filmLabels,
+      required final String filmLabels,
       required final String filmTrailerLink,
       required final String filmPosterLink}) = _$_FilmDetails;
 
@@ -307,7 +300,7 @@ abstract class _FilmDetails implements FilmDetails {
   @override
   double get filmKinopoiskRating;
   @override
-  List<String> get filmLabels;
+  String get filmLabels;
   @override
   String get filmTrailerLink;
   @override

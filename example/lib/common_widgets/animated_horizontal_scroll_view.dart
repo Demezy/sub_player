@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-import 'animated_scroll_view_item.dart';
+part 'animated_scroll_view_item.dart';
 
 class AnimatedHorizontalListView extends StatelessWidget {
   final List<Widget> children;
   final double height;
   final double itemWidth;
+
   const AnimatedHorizontalListView({
     Key? key,
     required this.children,
