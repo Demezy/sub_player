@@ -20,6 +20,7 @@ FilmDetails _$FilmDetailsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$FilmDetails {
+  int get id => throw _privateConstructorUsedError;
   String get filmTitle => throw _privateConstructorUsedError;
   String get filmDescription => throw _privateConstructorUsedError;
   double get filmRating => throw _privateConstructorUsedError;
@@ -42,7 +43,8 @@ abstract class $FilmDetailsCopyWith<$Res> {
       _$FilmDetailsCopyWithImpl<$Res, FilmDetails>;
   @useResult
   $Res call(
-      {String filmTitle,
+      {int id,
+      String filmTitle,
       String filmDescription,
       double filmRating,
       double filmIMBdRating,
@@ -65,6 +67,7 @@ class _$FilmDetailsCopyWithImpl<$Res, $Val extends FilmDetails>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? filmTitle = null,
     Object? filmDescription = null,
     Object? filmRating = null,
@@ -75,6 +78,10 @@ class _$FilmDetailsCopyWithImpl<$Res, $Val extends FilmDetails>
     Object? filmPosterLink = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       filmTitle: null == filmTitle
           ? _value.filmTitle
           : filmTitle // ignore: cast_nullable_to_non_nullable
@@ -120,7 +127,8 @@ abstract class _$$_FilmDetailsCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String filmTitle,
+      {int id,
+      String filmTitle,
       String filmDescription,
       double filmRating,
       double filmIMBdRating,
@@ -141,6 +149,7 @@ class __$$_FilmDetailsCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? filmTitle = null,
     Object? filmDescription = null,
     Object? filmRating = null,
@@ -151,6 +160,10 @@ class __$$_FilmDetailsCopyWithImpl<$Res>
     Object? filmPosterLink = null,
   }) {
     return _then(_$_FilmDetails(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       filmTitle: null == filmTitle
           ? _value.filmTitle
           : filmTitle // ignore: cast_nullable_to_non_nullable
@@ -191,7 +204,8 @@ class __$$_FilmDetailsCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_FilmDetails implements _FilmDetails {
   const _$_FilmDetails(
-      {required this.filmTitle,
+      {required this.id,
+      required this.filmTitle,
       required this.filmDescription,
       required this.filmRating,
       required this.filmIMBdRating,
@@ -204,6 +218,8 @@ class _$_FilmDetails implements _FilmDetails {
   factory _$_FilmDetails.fromJson(Map<String, dynamic> json) =>
       _$$_FilmDetailsFromJson(json);
 
+  @override
+  final int id;
   @override
   final String filmTitle;
   @override
@@ -229,7 +245,7 @@ class _$_FilmDetails implements _FilmDetails {
 
   @override
   String toString() {
-    return 'FilmDetails(filmTitle: $filmTitle, filmDescription: $filmDescription, filmRating: $filmRating, filmIMBdRating: $filmIMBdRating, filmKinopoiskRating: $filmKinopoiskRating, filmLabels: $filmLabels, filmTrailerLink: $filmTrailerLink, filmPosterLink: $filmPosterLink)';
+    return 'FilmDetails(id: $id, filmTitle: $filmTitle, filmDescription: $filmDescription, filmRating: $filmRating, filmIMBdRating: $filmIMBdRating, filmKinopoiskRating: $filmKinopoiskRating, filmLabels: $filmLabels, filmTrailerLink: $filmTrailerLink, filmPosterLink: $filmPosterLink)';
   }
 
   @override
@@ -237,6 +253,7 @@ class _$_FilmDetails implements _FilmDetails {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_FilmDetails &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.filmTitle, filmTitle) ||
                 other.filmTitle == filmTitle) &&
             (identical(other.filmDescription, filmDescription) ||
@@ -259,6 +276,7 @@ class _$_FilmDetails implements _FilmDetails {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
       filmTitle,
       filmDescription,
       filmRating,
@@ -284,7 +302,8 @@ class _$_FilmDetails implements _FilmDetails {
 
 abstract class _FilmDetails implements FilmDetails {
   const factory _FilmDetails(
-      {required final String filmTitle,
+      {required final int id,
+      required final String filmTitle,
       required final String filmDescription,
       required final double filmRating,
       required final double filmIMBdRating,
@@ -296,6 +315,8 @@ abstract class _FilmDetails implements FilmDetails {
   factory _FilmDetails.fromJson(Map<String, dynamic> json) =
       _$_FilmDetails.fromJson;
 
+  @override
+  int get id;
   @override
   String get filmTitle;
   @override
