@@ -4,7 +4,12 @@ import 'package:video_player/video_player.dart';
 import 'gradient.dart';
 
 class MovieTrailer extends StatefulWidget {
-  const MovieTrailer({Key? key}) : super(key: key);
+  const MovieTrailer({
+    Key? key,
+    required this.trailerLink,
+  }) : super(key: key);
+
+  final String trailerLink;
 
   @override
   State<MovieTrailer> createState() => _MovieTrailerState();
@@ -17,7 +22,7 @@ class _MovieTrailerState extends State<MovieTrailer> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.network(
-      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+      widget.trailerLink,
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     )
       ..setLooping(true)

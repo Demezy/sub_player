@@ -8,20 +8,20 @@ part of 'film_details.dart';
 
 _$_FilmDetails _$$_FilmDetailsFromJson(Map<String, dynamic> json) =>
     _$_FilmDetails(
+      id: json['id'] as int,
       filmTitle: json['filmTitle'] as String,
       filmDescription: json['filmDescription'] as String,
       filmRating: (json['filmRating'] as num).toDouble(),
       filmIMBdRating: (json['filmIMBdRating'] as num).toDouble(),
       filmKinopoiskRating: (json['filmKinopoiskRating'] as num).toDouble(),
-      filmLabels: (json['filmLabels'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+      filmLabels: json['filmLabels'] as String,
       filmTrailerLink: json['filmTrailerLink'] as String,
       filmPosterLink: json['filmPosterLink'] as String,
     );
 
 Map<String, dynamic> _$$_FilmDetailsToJson(_$_FilmDetails instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'filmTitle': instance.filmTitle,
       'filmDescription': instance.filmDescription,
       'filmRating': instance.filmRating,

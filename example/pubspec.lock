@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "52.0.0"
+  adaptive_dialog:
+    dependency: "direct main"
+    description:
+      name: adaptive_dialog
+      sha256: "5dea5b051a217d127b57587686990131488f964a9d2ea1142401f101e18795df"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.8.2"
   analyzer:
     dependency: transitive
     description:
@@ -25,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.2"
+  animations:
+    dependency: transitive
+    description:
+      name: animations
+      sha256: fe8a6bdca435f718bb1dc8a11661b2c22504c6da40ef934cee8327ed77934164
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.7"
   archive:
     dependency: transitive
     description:
@@ -241,6 +257,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.6"
+  dynamic_color:
+    dependency: transitive
+    description:
+      name: dynamic_color
+      sha256: c4a508284b14ec4dda5adba2c28b2cdd34fbae1afead7e8c52cad87d51c5405b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.2"
   fake_async:
     dependency: transitive
     description:
@@ -310,6 +334,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  flutter_svg:
+    dependency: "direct main"
+    description:
+      name: flutter_svg
+      sha256: "12006889e2987c549c4c1ec1a5ba4ec4b24d34d2469ee5f9476c926dcecff266"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.4"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -440,6 +472,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.15"
+  intersperse:
+    dependency: transitive
+    description:
+      name: intersperse
+      sha256: "2f8a905c96f6cbba978644a3d5b31b8d86ddc44917662df7d27a61f3df66a576"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   io:
     dependency: transitive
     description:
@@ -512,6 +552,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  macos_ui:
+    dependency: transitive
+    description:
+      name: macos_ui
+      sha256: "57208eec8180656acd379e1c754e9b6d8830f32a020b94571ae2188f8112075b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.12.2"
   matcher:
     dependency: transitive
     description:
@@ -560,6 +608,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.2"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      sha256: e3e67b1629e6f7e8100b367d3db6ba6af4b1f0bb80f64db18ef1fbabd2fa9ccf
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   path_provider:
     dependency: transitive
     description:
@@ -876,6 +932,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  vector_graphics:
+    dependency: transitive
+    description:
+      name: vector_graphics
+      sha256: "4cf8e60dbe4d3a693d37dff11255a172594c0793da542183cbfe7fe978ae4aaa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
+  vector_graphics_codec:
+    dependency: transitive
+    description:
+      name: vector_graphics_codec
+      sha256: "278ad5f816f58b1967396d1f78ced470e3e58c9fe4b27010102c0a595c764468"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
+  vector_graphics_compiler:
+    dependency: transitive
+    description:
+      name: vector_graphics_compiler
+      sha256: "0bf61ad56e6fd6688a2865d3ceaea396bc6a0a90ea0d7ad5049b1b76c09d6163"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
   vector_math:
     dependency: transitive
     description:
@@ -924,6 +1004,46 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.15"
+  wakelock:
+    dependency: "direct main"
+    description:
+      name: wakelock
+      sha256: "769ecf42eb2d07128407b50cb93d7c10bd2ee48f0276ef0119db1d25cc2f87db"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.2"
+  wakelock_macos:
+    dependency: transitive
+    description:
+      name: wakelock_macos
+      sha256: "047c6be2f88cb6b76d02553bca5a3a3b95323b15d30867eca53a19a0a319d4cd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0"
+  wakelock_platform_interface:
+    dependency: transitive
+    description:
+      name: wakelock_platform_interface
+      sha256: "1f4aeb81fb592b863da83d2d0f7b8196067451e4df91046c26b54a403f9de621"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
+  wakelock_web:
+    dependency: transitive
+    description:
+      name: wakelock_web
+      sha256: "1b256b811ee3f0834888efddfe03da8d18d0819317f20f6193e2922b41a501b5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0"
+  wakelock_windows:
+    dependency: transitive
+    description:
+      name: wakelock_windows
+      sha256: "857f77b3fe6ae82dd045455baa626bc4b93cb9bb6c86bf3f27c182167c3a5567"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   watcher:
     dependency: transitive
     description:
@@ -982,4 +1102,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.19.2 <3.0.0"
-  flutter: ">=3.3.0"
+  flutter: ">=3.7.0-0"

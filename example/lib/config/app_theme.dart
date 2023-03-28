@@ -13,11 +13,7 @@ class AppTheme {
       opacity: 1,
       size: 24,
     ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Colors.white,
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.black45,
-    ),
+
     textTheme: TextTheme(
       /// main screen title
       displayLarge: GoogleFonts.mulish(
@@ -126,7 +122,7 @@ class AppTheme {
       colorScheme: ColorScheme(
         primary: Color(0xff00A19A),
         secondary: Color(0xff1E254E),
-        surface: Color(0xff424242),
+        surface: Colors.transparent,
         background: Color(0xff121212),
         error: Color(0xffd32f2f),
         onPrimary: Color(0xff1E254E),
@@ -142,7 +138,7 @@ class AppTheme {
       style: ButtonStyle(
         textStyle: MaterialStateProperty.all<TextStyle?>(
           GoogleFonts.mulish(
-            color: const Color(0xff00A19A),
+            color: const Color(0xff9c9066),
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -259,7 +255,7 @@ class AppTheme {
     // dark blue
     primaryColorDark: const Color(0xff1E254E),
     // grey not black
-    canvasColor: const Color(0xff2C2C2C),
+    //canvasColor: const Color(0xff2C2C2C),
     scaffoldBackgroundColor: const Color(0xFF011423),
     cardColor: const Color(0xff424242),
     dividerColor: const Color(0x1fffffff),
@@ -296,7 +292,7 @@ class AppTheme {
         onSecondary: Color(0xff000000),
         onSurface: Color(0xffffffff),
         // onBackground: Color(0xff969CAE),
-        onBackground: Color(0xff2C2C2C),
+        onBackground: Colors.transparent,
         onError: Color(0xff000000),
         brightness: Brightness.dark,
       ),
@@ -477,6 +473,22 @@ class AppTheme {
       unselectedLabelColor: Color(0xb2ffffff),
     ),
 
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Color(0xFF232E42),
+      selectedIconTheme: IconThemeData(
+        color: Color(0xFFB3A976),
+      ),
+      selectedLabelStyle: TextStyle(
+        color: Color(0xFFB3A976),
+      ),
+      unselectedLabelStyle: TextStyle(
+        color: Colors.white,
+      ),
+      unselectedIconTheme: IconThemeData(
+        color: Colors.white,
+      ),
+    ),
+
     chipTheme: const ChipThemeData(
       backgroundColor: Color(0x1fffffff),
       brightness: Brightness.dark,
@@ -502,7 +514,5 @@ class AppTheme {
     dialogTheme: const DialogTheme(
       shape: RoundedRectangleBorder(),
     ),
-
-    bottomAppBarTheme: const BottomAppBarTheme(color: Color(0xff424242)),
   );
 }
