@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of './main_page.dart';
 
 class SeeAllButton extends StatelessWidget {
   final void Function() onPressed;

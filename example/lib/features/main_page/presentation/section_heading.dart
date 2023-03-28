@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'see_all_button.dart';
+part of './main_page.dart';
 
 class SectionHeading extends StatelessWidget {
   final String title;

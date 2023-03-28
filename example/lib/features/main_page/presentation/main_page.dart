@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'animated_horisontal_scroll_view.dart';
-import 'section_heading.dart';
+
+part './section_heading.dart';
+part './see_all_button.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
