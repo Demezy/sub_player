@@ -7,6 +7,7 @@ part 'film_details.g.dart';
 @freezed
 class FilmDetails with _$FilmDetails {
   const factory FilmDetails({
+    required int id,
     required String filmTitle,
     required String filmDescription,
     required double filmRating,
