@@ -14,7 +14,10 @@ class SectionHeading extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.displayLarge,
+        ),
         SeeAllButton(onPressed: onPressed),
       ],
     );
