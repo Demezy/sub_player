@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common_widgets/animated_horizontal_scroll_view.dart';
@@ -14,8 +15,18 @@ part 'widgets/section_heading.dart';
 class MainPage extends ConsumerWidget {
   const MainPage({super.key});
 
+  Future setOrientation() async {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    setOrientation();
     final bannerFilms = ref.watch(bigBannerFilmsProvider);
     final popularFilms = ref.watch(popularFilmsProvider);
     final recommendedFilms = ref.watch(recommendedFilmsProvider);

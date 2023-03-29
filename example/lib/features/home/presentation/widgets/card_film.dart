@@ -8,7 +8,7 @@ class CardFilm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, '/decsription', arguments: {
+      onTap: () => Navigator.pushNamed(context, '/description', arguments: {
         'film': film,
       },),
       child: SizedBox(

@@ -35,8 +35,10 @@ void main() async {
         theme: AppTheme.dark,
         darkTheme: AppTheme.dark,
         routes: <String, WidgetBuilder>{
-          '/decsription': (BuildContext context) => const DetailsView(),
-          '/player': (_) => const LandscapePlayerPage(),
+          '/description': (BuildContext context) => const DetailsView(),
+          '/player': (BuildContext context) => LandscapePlayerPage(
+              ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>
+          ),
         },
         home: const MyApp(),
       ),

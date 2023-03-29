@@ -1,13 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:readmore/readmore.dart';
 
+import '../../../../common_widgets/animated_horizontal_scroll_view.dart';
+import '../../../home/data/film_repository.dart';
+import '../../../home/presentation/home_view.dart';
 import 'movie_trailer.dart';
 
-class DetailsMobileView extends StatelessWidget {
+class DetailsMobileView extends ConsumerStatefulWidget {
   const DetailsMobileView({Key? key}) : super(key: key);
 
   @override
+  ConsumerState<DetailsMobileView> createState() => _DetailsMobileViewState();
+}
+
+class _DetailsMobileViewState extends ConsumerState<DetailsMobileView> {
+  @override
+  void initState() {
+    super.initState();
+    setOrientation();
+  }
+
+  Future setOrientation() async {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final popularFilms = ref.watch(popularFilmsProvider);
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     final film = arguments['film'];
@@ -116,7 +142,13 @@ class DetailsMobileView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/player'),
+              onPressed: () => Navigator.pushNamed(
+                context,
+                '/player',
+                arguments: {
+                  'filmId': film.id,
+                },
+              ),
               child: const Text('Смотреть'),
             ),
           ),
@@ -199,7 +231,8 @@ class DetailsMobileView extends StatelessWidget {
                     child: Column(
                       children: [
                         InkWell(
-                          onTap: () => Navigator.pushNamed(context, '/player'),
+                          onTap: () => Navigator.pushNamed(context, '/player',
+                              arguments: film.id),
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -257,6 +290,42 @@ class DetailsMobileView extends StatelessWidget {
             child: Text(
               'Специально для вас',
               style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          popularFilms.when(
+            data: (films) => AnimatedHorizontalListView(
+              height: 300,
+              itemWidth: 160,
+              children: films.isEmpty
+                  ? const [
+                      Center(
+                        child: Text('Oops.. Nothing to show.'),
+                      )
+                    ]
+                  : [
+                      ...films
+                          .map(
+                            (film) => CardFilm(
+                              film: film,
+                            ),
+                          )
+                          .toList()
+                    ],
+            ),
+            error: (_, __) => Container(
+              color: Colors.red[200],
+              child: Center(
+                child: Text(
+                  'error',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(color: Colors.amber),
+                ),
+              ),
+            ),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
             ),
           ),
         ],

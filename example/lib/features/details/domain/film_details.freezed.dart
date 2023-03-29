@@ -23,9 +23,9 @@ mixin _$FilmDetails {
   int get id => throw _privateConstructorUsedError;
   String get filmTitle => throw _privateConstructorUsedError;
   String get filmDescription => throw _privateConstructorUsedError;
-  double get filmRating => throw _privateConstructorUsedError;
-  double get filmIMBdRating => throw _privateConstructorUsedError;
-  double get filmKinopoiskRating => throw _privateConstructorUsedError;
+  double? get filmRating => throw _privateConstructorUsedError;
+  double? get filmIMBdRating => throw _privateConstructorUsedError;
+  double? get filmKinopoiskRating => throw _privateConstructorUsedError;
   String get filmLabels => throw _privateConstructorUsedError;
   String get filmTrailerLink => throw _privateConstructorUsedError;
   String get filmPosterLink => throw _privateConstructorUsedError;
@@ -46,9 +46,9 @@ abstract class $FilmDetailsCopyWith<$Res> {
       {int id,
       String filmTitle,
       String filmDescription,
-      double filmRating,
-      double filmIMBdRating,
-      double filmKinopoiskRating,
+      double? filmRating,
+      double? filmIMBdRating,
+      double? filmKinopoiskRating,
       String filmLabels,
       String filmTrailerLink,
       String filmPosterLink});
@@ -70,9 +70,9 @@ class _$FilmDetailsCopyWithImpl<$Res, $Val extends FilmDetails>
     Object? id = null,
     Object? filmTitle = null,
     Object? filmDescription = null,
-    Object? filmRating = null,
-    Object? filmIMBdRating = null,
-    Object? filmKinopoiskRating = null,
+    Object? filmRating = freezed,
+    Object? filmIMBdRating = freezed,
+    Object? filmKinopoiskRating = freezed,
     Object? filmLabels = null,
     Object? filmTrailerLink = null,
     Object? filmPosterLink = null,
@@ -90,18 +90,18 @@ class _$FilmDetailsCopyWithImpl<$Res, $Val extends FilmDetails>
           ? _value.filmDescription
           : filmDescription // ignore: cast_nullable_to_non_nullable
               as String,
-      filmRating: null == filmRating
+      filmRating: freezed == filmRating
           ? _value.filmRating
           : filmRating // ignore: cast_nullable_to_non_nullable
-              as double,
-      filmIMBdRating: null == filmIMBdRating
+              as double?,
+      filmIMBdRating: freezed == filmIMBdRating
           ? _value.filmIMBdRating
           : filmIMBdRating // ignore: cast_nullable_to_non_nullable
-              as double,
-      filmKinopoiskRating: null == filmKinopoiskRating
+              as double?,
+      filmKinopoiskRating: freezed == filmKinopoiskRating
           ? _value.filmKinopoiskRating
           : filmKinopoiskRating // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       filmLabels: null == filmLabels
           ? _value.filmLabels
           : filmLabels // ignore: cast_nullable_to_non_nullable
@@ -130,9 +130,9 @@ abstract class _$$_FilmDetailsCopyWith<$Res>
       {int id,
       String filmTitle,
       String filmDescription,
-      double filmRating,
-      double filmIMBdRating,
-      double filmKinopoiskRating,
+      double? filmRating,
+      double? filmIMBdRating,
+      double? filmKinopoiskRating,
       String filmLabels,
       String filmTrailerLink,
       String filmPosterLink});
@@ -152,9 +152,9 @@ class __$$_FilmDetailsCopyWithImpl<$Res>
     Object? id = null,
     Object? filmTitle = null,
     Object? filmDescription = null,
-    Object? filmRating = null,
-    Object? filmIMBdRating = null,
-    Object? filmKinopoiskRating = null,
+    Object? filmRating = freezed,
+    Object? filmIMBdRating = freezed,
+    Object? filmKinopoiskRating = freezed,
     Object? filmLabels = null,
     Object? filmTrailerLink = null,
     Object? filmPosterLink = null,
@@ -172,18 +172,18 @@ class __$$_FilmDetailsCopyWithImpl<$Res>
           ? _value.filmDescription
           : filmDescription // ignore: cast_nullable_to_non_nullable
               as String,
-      filmRating: null == filmRating
+      filmRating: freezed == filmRating
           ? _value.filmRating
           : filmRating // ignore: cast_nullable_to_non_nullable
-              as double,
-      filmIMBdRating: null == filmIMBdRating
+              as double?,
+      filmIMBdRating: freezed == filmIMBdRating
           ? _value.filmIMBdRating
           : filmIMBdRating // ignore: cast_nullable_to_non_nullable
-              as double,
-      filmKinopoiskRating: null == filmKinopoiskRating
+              as double?,
+      filmKinopoiskRating: freezed == filmKinopoiskRating
           ? _value.filmKinopoiskRating
           : filmKinopoiskRating // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       filmLabels: null == filmLabels
           ? _value.filmLabels
           : filmLabels // ignore: cast_nullable_to_non_nullable
@@ -224,11 +224,11 @@ class _$_FilmDetails implements _FilmDetails {
   @override
   final String filmDescription;
   @override
-  final double filmRating;
+  final double? filmRating;
   @override
-  final double filmIMBdRating;
+  final double? filmIMBdRating;
   @override
-  final double filmKinopoiskRating;
+  final double? filmKinopoiskRating;
   @override
   final String filmLabels;
   @override
@@ -298,9 +298,9 @@ abstract class _FilmDetails implements FilmDetails {
       {required final int id,
       required final String filmTitle,
       required final String filmDescription,
-      required final double filmRating,
-      required final double filmIMBdRating,
-      required final double filmKinopoiskRating,
+      required final double? filmRating,
+      required final double? filmIMBdRating,
+      required final double? filmKinopoiskRating,
       required final String filmLabels,
       required final String filmTrailerLink,
       required final String filmPosterLink}) = _$_FilmDetails;
@@ -315,11 +315,11 @@ abstract class _FilmDetails implements FilmDetails {
   @override
   String get filmDescription;
   @override
-  double get filmRating;
+  double? get filmRating;
   @override
-  double get filmIMBdRating;
+  double? get filmIMBdRating;
   @override
-  double get filmKinopoiskRating;
+  double? get filmKinopoiskRating;
   @override
   String get filmLabels;
   @override
