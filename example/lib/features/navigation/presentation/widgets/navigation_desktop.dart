@@ -73,7 +73,7 @@ class NavigationDesktop extends StatelessWidget {
                 Row(
                   children: const [
                     SizedBox(
-                      width: 300,
+                      width: 280,
                       child: TextField(
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.search),
