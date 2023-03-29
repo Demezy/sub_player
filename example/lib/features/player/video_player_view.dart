@@ -1,15 +1,20 @@
+import 'dart:math';
+
+import 'package:example/features/home/data/film_repository.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 
 import '../../config/constants.dart';
+import '../details/domain/film_details.dart';
 
 class LandscapePlayerPage extends StatefulWidget {
   const LandscapePlayerPage(this.arguments, {super.key});
 
-  final Map<String, dynamic> arguments;
+  final FilmDetails arguments;
 
   @override
   _LandscapePlayerPageState createState() => _LandscapePlayerPageState();
@@ -17,13 +22,14 @@ class LandscapePlayerPage extends StatefulWidget {
 
 class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
   late VideoPlayerController controller;
+  final ValueNotifier<bool> overlayVisible = ValueNotifier(false);
 
   @override
   void initState() {
     super.initState();
 
     controller = VideoPlayerController.network(
-      '${Consts.baseUrl}movies/${widget.arguments['filmId']}/watch',
+      '${Consts.baseUrl}movies/${widget.arguments.id}/watch',
     )
       ..addListener(() => setState(() {}))
       ..initialize().then((_) => controller.play());
@@ -34,13 +40,15 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
   @override
   void dispose() {
     controller.dispose();
-    setOrientation();
+    setPortrait();
     super.dispose();
   }
 
   Future setLandscape() async {
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: []);
+    await SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [],
+    );
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
@@ -49,174 +57,383 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
     await Wakelock.enable();
   }
 
-  Future setOrientation() async {
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+  Future setPortrait() async {
+    await SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [],
+    );
     await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
     ]);
+
+    await Wakelock.enable();
   }
 
   @override
-  Widget build(BuildContext context) =>
-      VideoPlayerFullscreenWidget(controller: controller);
-}
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () {
+        if (overlayVisible.value) {
+          overlayVisible.value = false;
+          controller.play();
+          return Future.value(false);
+        }
 
-class VideoPlayerFullscreenWidget extends StatelessWidget {
-  final VideoPlayerController controller;
+        return Future.value(true);
+      },
+      child: FocusScope(
+        autofocus: true,
+        onKey: (node, event) {
+          if (event.isKeyPressed(LogicalKeyboardKey.enter) &&
+              !overlayVisible.value) {
+            overlayVisible.value = true;
+            controller.pause();
+            return KeyEventResult.handled;
+          }
 
-  const VideoPlayerFullscreenWidget({
-    Key? key,
-    required this.controller,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => controller.value.isInitialized
-      ? Scaffold(
-          body: SnappingSheet(
-            lockOverflowDrag: true,
-            snappingPositions: [
-              const SnappingPosition.factor(
-                snappingCurve: Curves.elasticOut,
-                snappingDuration: Duration(milliseconds: 1750),
-                grabbingContentOffset: GrabbingContentOffset.bottom,
-                positionFactor: 1.0,
+          return KeyEventResult.ignored;
+        },
+        child: Material(
+          child: Stack(
+            children: [
+              AspectRatio(
+                aspectRatio: controller.value.aspectRatio,
+                child: VideoPlayer(controller),
               ),
-              SnappingPosition.pixels(
-                snappingCurve: Curves.elasticOut,
-                snappingDuration: const Duration(milliseconds: 1750),
-                grabbingContentOffset: GrabbingContentOffset.top,
-                positionPixels: MediaQuery.of(context).size.height * .6,
-              ),
+              ValueListenableBuilder(
+                valueListenable: overlayVisible,
+                builder: (context, visible, _) => visible
+                    ? _PlayerOverlay(
+                        film: widget.arguments,
+                        controller: controller,
+                      )
+                    : const SizedBox.shrink(),
+              )
             ],
-            grabbingHeight: 36,
-            grabbing: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30.0),
-                        bottomRight: Radius.circular(30.0),
-                      ),
-                      color: Colors.blue,
-                    ),
-                    width: MediaQuery.of(context).size.height,
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.grey,
-                      ),
-                      height: 8.0,
-                      width: 100.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            sheetAbove: SnappingSheetContent(
-              draggable: true,
-              // TODO: Add your sheet content here
-              child: Center(
-                child: Container(
-                  color: Colors.blue,
-                  width: MediaQuery.of(context).size.height,
-                ),
-              ),
-            ),
-            child: buildVideo(),
           ),
-        )
-      : const Center(child: CircularProgressIndicator());
-
-  Widget buildVideo() => Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          buildVideoPlayer(),
-          BasicOverlayWidget(controller: controller),
-        ],
-      );
-
-  Widget buildVideoPlayer() => buildFullScreen(
-        child: AspectRatio(
-          aspectRatio: controller.value.aspectRatio,
-          child: VideoPlayer(controller),
         ),
-      );
-
-  Widget buildFullScreen({
-    required Widget child,
-  }) {
-    final size = controller.value.size;
-    final width = size.width;
-    final height = size.height;
-
-    return FittedBox(
-      fit: BoxFit.cover,
-      child: SizedBox(width: width, height: height, child: child),
+      ),
     );
   }
 }
 
-class BasicOverlayWidget extends StatelessWidget {
+class _PlayerOverlay extends StatelessWidget {
+  final FilmDetails film;
   final VideoPlayerController controller;
 
-  const BasicOverlayWidget({
-    Key? key,
+  const _PlayerOverlay({
+    required this.film,
     required this.controller,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () =>
-            controller.value.isPlaying ? controller.pause() : controller.play(),
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: 24,
-              left: 36,
-              child: FloatingActionButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Icon(Icons.arrow_back),
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.black,
+                Colors.black87,
+                Colors.black54,
+                Colors.black38,
+                Colors.black26,
+                Colors.black12,
+                Colors.transparent,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.0, 0.13, 0.34, 0.47, 0.56, 0.73, 1.0],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    film.filmTitle,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Center(
+            child: ValueListenableBuilder(
+              valueListenable: controller,
+              builder: (context, state, _) {
+                return _FocusIcon(
+                  state.isPlaying ? CupertinoIcons.pause : CupertinoIcons.play,
+                  size: 50,
+                  autofocus: true,
+                  onTap: () {
+                    if (state.isPlaying) {
+                      controller.pause();
+                    } else {
+                      controller.play();
+                    }
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+        DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.black,
+                Colors.black87,
+                Colors.black54,
+                Colors.black38,
+                Colors.black26,
+                Colors.black12,
+                Colors.transparent,
+              ],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              stops: [0.0, 0.13, 0.34, 0.47, 0.56, 0.93, 1.0],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Row(
+              children: [
+                _FocusIcon(
+                  CupertinoIcons.arrow_turn_up_left,
+                  onTap: () {
+                    controller
+                      ..play()
+                      ..seekTo(
+                        Duration(
+                          seconds: max(
+                            controller.value.position.inSeconds - 30,
+                            0,
+                          ),
+                        ),
+                      );
+                  },
+                ),
+                const SizedBox(width: 20),
+                _FocusIcon(
+                  CupertinoIcons.arrow_turn_up_right,
+                  onTap: () {
+                    controller
+                      ..play()
+                      ..seekTo(
+                        Duration(
+                          seconds: min(
+                            controller.value.position.inSeconds + 30,
+                            controller.value.duration.inSeconds,
+                          ),
+                        ),
+                      );
+                  },
+                ),
+                const Spacer(),
+                _QualityDrawer(
+                  film.id,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _QualityDrawer extends ConsumerStatefulWidget {
+  final int filmId;
+
+  const _QualityDrawer(this.filmId);
+
+  @override
+  ConsumerState<_QualityDrawer> createState() => _QualityDrawerState();
+}
+
+class _QualityDrawerState extends ConsumerState<_QualityDrawer> {
+  bool drawerVisible = false;
+  String selectedQuality = 'auto';
+
+  @override
+  Widget build(BuildContext context) {
+    final qualitiesFuture = ref.watch(filmQualitiesProvider(widget.filmId));
+
+    return SizedOverflowBox(
+      size: const Size(36, 36),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          _FocusIcon(
+            CupertinoIcons.recordingtape,
+            onTap: () {
+              setState(() {
+                drawerVisible = true;
+              });
+            },
+          ),
+          Positioned(
+            bottom: 56,
+            right: 0,
+            child: SizedBox(
+              width: 300,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.black38,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: qualitiesFuture.when(
+                    data: (qualities) {
+                      return Row(
+                        children: [
+                          const Text('Video quality:'),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          for (var quality in qualities)
+                            _FocusItem(
+                              quality,
+                              autofocus: qualities.indexOf(quality) == 0,
+                              checked: quality == selectedQuality,
+                              onTap: () {
+                                setState(() {
+                                  selectedQuality = quality;
+                                });
+                              },
+                            )
+                        ],
+                      );
+                    },
+                    error: (err, trace) => const CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                    loading: () => const CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
             ),
-            buildPlay(),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: buildIndicator(),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-  Widget buildIndicator() => VideoProgressIndicator(
-        controller,
-        allowScrubbing: true,
-        colors: const VideoProgressColors(
-          playedColor: Colors.white,
-          bufferedColor: Colors.white54,
-          backgroundColor: Colors.black12,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 40,
-          vertical: 20,
-        ),
-      );
+class _FocusItem extends StatefulWidget {
+  final String text;
+  final bool? checked;
+  final bool? autofocus;
+  final Function()? onTap;
 
-  Widget buildPlay() => controller.value.isPlaying
-      ? Container()
-      : Container(
-          alignment: Alignment.center,
-          color: Colors.black26,
-          child: const Icon(Icons.play_arrow, color: Colors.white, size: 80),
-        );
+  const _FocusItem(
+    this.text, {
+    this.checked,
+    this.autofocus,
+    this.onTap,
+    super.key,
+  });
+
+  @override
+  State<_FocusItem> createState() => _FocusItemState();
+}
+
+class _FocusItemState extends State<_FocusItem> {
+  bool focused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      autofocus: widget.autofocus ?? false,
+      onTap: widget.onTap,
+      onFocusChange: (newFocus) {
+        setState(() {
+          focused = newFocus;
+        });
+      },
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+            border:
+                Border.all(color: focused ? Colors.white : Colors.transparent),
+            borderRadius: BorderRadius.circular(8.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              if (widget.checked ?? false)
+                const Icon(
+                  CupertinoIcons.check_mark,
+                  size: 20,
+                ),
+              Expanded(
+                child: Text(widget.text),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FocusIcon extends StatefulWidget {
+  final IconData icon;
+  final bool? autofocus;
+  final Function()? onTap;
+  final double? size;
+
+  const _FocusIcon(
+    this.icon, {
+    this.autofocus,
+    this.onTap,
+    this.size,
+    super.key,
+  });
+
+  @override
+  State<_FocusIcon> createState() => _FocusIconState();
+}
+
+class _FocusIconState extends State<_FocusIcon> {
+  bool focused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      autofocus: widget.autofocus ?? false,
+      onTap: widget.onTap,
+      onFocusChange: (newFocus) {
+        setState(() {
+          focused = newFocus;
+        });
+      },
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border:
+              Border.all(color: focused ? Colors.white : Colors.transparent),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(
+            widget.icon,
+            size: widget.size ?? 20,
+          ),
+        ),
+      ),
+    );
+  }
 }

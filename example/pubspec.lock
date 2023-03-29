@@ -347,6 +347,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_tizen:
+    dependency: "direct main"
+    description:
+      name: flutter_tizen
+      sha256: "1f3facded2aac6656c8036d5daa134e6b4dab860242d0549b10c90ae1803bbaa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   flutter_web_plugins:
     dependency: transitive
     description: flutter

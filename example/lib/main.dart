@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 
 import 'config/app_theme.dart';
 import 'config/constants.dart';
+import 'features/details/domain/film_details.dart';
 import 'features/details/ui/details_view.dart';
 import 'features/home/presentation/home_view.dart';
 import 'features/navigation/presentation/navigation.dart';
@@ -42,7 +43,7 @@ void main() async {
           routes: <String, WidgetBuilder>{
             '/description': (BuildContext context) => const DetailsView(),
             '/player': (BuildContext context) => LandscapePlayerPage(
-                ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>
+                ModalRoute.of(context)!.settings.arguments as FilmDetails,
             ),
           },
           home: const MyApp(),

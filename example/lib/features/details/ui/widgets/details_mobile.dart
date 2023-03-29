@@ -6,6 +6,7 @@ import 'package:readmore/readmore.dart';
 import '../../../../common_widgets/animated_horizontal_scroll_view.dart';
 import '../../../home/data/film_repository.dart';
 import '../../../home/presentation/home_view.dart';
+import '../../domain/film_details.dart';
 import 'movie_trailer.dart';
 
 class DetailsMobileView extends ConsumerStatefulWidget {
@@ -34,9 +35,8 @@ class _DetailsMobileViewState extends ConsumerState<DetailsMobileView> {
   @override
   Widget build(BuildContext context) {
     final popularFilms = ref.watch(popularFilmsProvider);
-    final arguments = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    final film = arguments['film'];
+    final film = ModalRoute.of(context)?.settings.arguments as FilmDetails;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -142,13 +142,8 @@ class _DetailsMobileViewState extends ConsumerState<DetailsMobileView> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: ElevatedButton(
-              onPressed: () => Navigator.pushNamed(
-                context,
-                '/player',
-                arguments: {
-                  'filmId': film.id,
-                },
-              ),
+              onPressed: () =>
+                  Navigator.pushNamed(context, '/player', arguments: film),
               child: const Text('Смотреть'),
             ),
           ),
@@ -234,9 +229,7 @@ class _DetailsMobileViewState extends ConsumerState<DetailsMobileView> {
                           onTap: () => Navigator.pushNamed(
                             context,
                             '/player',
-                            arguments: {
-                              'filmId': film.id,
-                            },
+                            arguments: film,
                           ),
                           child: Container(
                             decoration: BoxDecoration(

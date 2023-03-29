@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../../../common_widgets/responsive_center.dart';
+import '../../domain/film_details.dart';
 import 'movie_trailer.dart';
 
 class DetailsWebView extends StatelessWidget {
@@ -9,9 +10,8 @@ class DetailsWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final arguments = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    final film = arguments['film'];
+    final film = ModalRoute.of(context)?.settings.arguments as FilmDetails;
+
     return Scaffold(
       body: Stack(
         alignment: AlignmentDirectional.topEnd,
@@ -136,9 +136,7 @@ class DetailsWebView extends StatelessWidget {
                                         onPressed: () => Navigator.pushNamed(
                                           context,
                                           '/player',
-                                          arguments: {
-                                            'filmId': film.id,
-                                          },
+                                          arguments: film,
                                         ),
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),

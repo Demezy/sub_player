@@ -24,9 +24,7 @@ class _CardFilmState extends State<CardFilm> {
       onTap: () => Navigator.pushNamed(
         context,
         '/description',
-        arguments: {
-          'film': widget.film,
-        },
+        arguments: widget.film,
       ),
       child: Transform.scale(
         scale: focused ? 1.2 : 1,

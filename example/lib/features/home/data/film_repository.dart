@@ -47,7 +47,6 @@ class FilmRepository {
   Future<Films> getRecommended() async {
     late final Response<List> response;
     try {
-      print('/movies/recommended/');
       response = await _dio.get<List>('/movies/recommended/');
     } on DioError {
       throw UnimplementedError();
@@ -59,6 +58,20 @@ class FilmRepository {
     return (response.data as List)
         .map((dynamic e) => FilmDetails.fromJson(e as ResponseJson))
         .toList();
+  }
+
+  Future<List<String>> getQualities(int filmId) async {
+    late final Response<List> response;
+    try {
+      response = await _dio.get<List>('/movies/$filmId/qualities');
+    } on DioError {
+      throw UnimplementedError();
+    }
+    if (response.data == null) {
+      throw UnimplementedError();
+    }
+
+    return response.data as List<String>;
   }
 }
 
@@ -75,4 +88,8 @@ final popularFilmsProvider = FutureProvider<Films>(
 
 final recommendedFilmsProvider = FutureProvider<Films>(
   (ref) => ref.read(filmRepositoryProvider).getRecommended(),
+);
+
+final filmQualitiesProvider = FutureProvider.autoDispose.family<List<String>, int>(
+    (ref, filmId) => ref.read(filmRepositoryProvider).getQualities(filmId)
 );
