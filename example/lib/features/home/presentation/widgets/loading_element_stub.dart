@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../common_widgets/animated_horizontal_scroll_view.dart';
 
@@ -21,13 +22,17 @@ class LoadingElementsStub extends HookWidget {
     )..repeat(reverse: true);
     final opacity = useAnimation<double>(
         Tween<double>(begin: 1, end: 0.2).animate(opacityController));
-    return AnimatedHorizontalListView(
-      height: height,
-      itemWidth: width,
-      children: List<Widget>.generate(
-        childrenCount,
-        (index) => Container(
-          color: Theme.of(context).cardColor.withOpacity(opacity),
+    return Shimmer.fromColors(
+      baseColor:Theme.of(context).cardColor,
+      highlightColor: const Color(0xffaaaaaa),
+      child: AnimatedHorizontalListView(
+        height: height,
+        itemWidth: width,
+        children: List<Widget>.generate(
+          childrenCount,
+          (index) => Container(
+          color: Colors.black,
+          ),
         ),
       ),
     );

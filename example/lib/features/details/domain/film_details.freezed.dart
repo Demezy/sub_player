@@ -29,6 +29,8 @@ mixin _$FilmDetails {
   String get filmLabels => throw _privateConstructorUsedError;
   String get filmTrailerLink => throw _privateConstructorUsedError;
   String get filmPosterLink => throw _privateConstructorUsedError;
+  String? get filmBannerBgLink => throw _privateConstructorUsedError;
+  String? get filmBannerTitleLink => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +53,9 @@ abstract class $FilmDetailsCopyWith<$Res> {
       double? filmKinopoiskRating,
       String filmLabels,
       String filmTrailerLink,
-      String filmPosterLink});
+      String filmPosterLink,
+      String? filmBannerBgLink,
+      String? filmBannerTitleLink});
 }
 
 /// @nodoc
@@ -76,6 +80,8 @@ class _$FilmDetailsCopyWithImpl<$Res, $Val extends FilmDetails>
     Object? filmLabels = null,
     Object? filmTrailerLink = null,
     Object? filmPosterLink = null,
+    Object? filmBannerBgLink = freezed,
+    Object? filmBannerTitleLink = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -114,6 +120,14 @@ class _$FilmDetailsCopyWithImpl<$Res, $Val extends FilmDetails>
           ? _value.filmPosterLink
           : filmPosterLink // ignore: cast_nullable_to_non_nullable
               as String,
+      filmBannerBgLink: freezed == filmBannerBgLink
+          ? _value.filmBannerBgLink
+          : filmBannerBgLink // ignore: cast_nullable_to_non_nullable
+              as String?,
+      filmBannerTitleLink: freezed == filmBannerTitleLink
+          ? _value.filmBannerTitleLink
+          : filmBannerTitleLink // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -135,7 +149,9 @@ abstract class _$$_FilmDetailsCopyWith<$Res>
       double? filmKinopoiskRating,
       String filmLabels,
       String filmTrailerLink,
-      String filmPosterLink});
+      String filmPosterLink,
+      String? filmBannerBgLink,
+      String? filmBannerTitleLink});
 }
 
 /// @nodoc
@@ -158,6 +174,8 @@ class __$$_FilmDetailsCopyWithImpl<$Res>
     Object? filmLabels = null,
     Object? filmTrailerLink = null,
     Object? filmPosterLink = null,
+    Object? filmBannerBgLink = freezed,
+    Object? filmBannerTitleLink = freezed,
   }) {
     return _then(_$_FilmDetails(
       id: null == id
@@ -196,6 +214,14 @@ class __$$_FilmDetailsCopyWithImpl<$Res>
           ? _value.filmPosterLink
           : filmPosterLink // ignore: cast_nullable_to_non_nullable
               as String,
+      filmBannerBgLink: freezed == filmBannerBgLink
+          ? _value.filmBannerBgLink
+          : filmBannerBgLink // ignore: cast_nullable_to_non_nullable
+              as String?,
+      filmBannerTitleLink: freezed == filmBannerTitleLink
+          ? _value.filmBannerTitleLink
+          : filmBannerTitleLink // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -212,7 +238,9 @@ class _$_FilmDetails implements _FilmDetails {
       required this.filmKinopoiskRating,
       required this.filmLabels,
       required this.filmTrailerLink,
-      required this.filmPosterLink});
+      required this.filmPosterLink,
+      this.filmBannerBgLink,
+      this.filmBannerTitleLink});
 
   factory _$_FilmDetails.fromJson(Map<String, dynamic> json) =>
       _$$_FilmDetailsFromJson(json);
@@ -235,10 +263,14 @@ class _$_FilmDetails implements _FilmDetails {
   final String filmTrailerLink;
   @override
   final String filmPosterLink;
+  @override
+  final String? filmBannerBgLink;
+  @override
+  final String? filmBannerTitleLink;
 
   @override
   String toString() {
-    return 'FilmDetails(id: $id, filmTitle: $filmTitle, filmDescription: $filmDescription, filmRating: $filmRating, filmIMBdRating: $filmIMBdRating, filmKinopoiskRating: $filmKinopoiskRating, filmLabels: $filmLabels, filmTrailerLink: $filmTrailerLink, filmPosterLink: $filmPosterLink)';
+    return 'FilmDetails(id: $id, filmTitle: $filmTitle, filmDescription: $filmDescription, filmRating: $filmRating, filmIMBdRating: $filmIMBdRating, filmKinopoiskRating: $filmKinopoiskRating, filmLabels: $filmLabels, filmTrailerLink: $filmTrailerLink, filmPosterLink: $filmPosterLink, filmBannerBgLink: $filmBannerBgLink, filmBannerTitleLink: $filmBannerTitleLink)';
   }
 
   @override
@@ -262,7 +294,11 @@ class _$_FilmDetails implements _FilmDetails {
             (identical(other.filmTrailerLink, filmTrailerLink) ||
                 other.filmTrailerLink == filmTrailerLink) &&
             (identical(other.filmPosterLink, filmPosterLink) ||
-                other.filmPosterLink == filmPosterLink));
+                other.filmPosterLink == filmPosterLink) &&
+            (identical(other.filmBannerBgLink, filmBannerBgLink) ||
+                other.filmBannerBgLink == filmBannerBgLink) &&
+            (identical(other.filmBannerTitleLink, filmBannerTitleLink) ||
+                other.filmBannerTitleLink == filmBannerTitleLink));
   }
 
   @JsonKey(ignore: true)
@@ -277,7 +313,9 @@ class _$_FilmDetails implements _FilmDetails {
       filmKinopoiskRating,
       filmLabels,
       filmTrailerLink,
-      filmPosterLink);
+      filmPosterLink,
+      filmBannerBgLink,
+      filmBannerTitleLink);
 
   @JsonKey(ignore: true)
   @override
@@ -303,7 +341,9 @@ abstract class _FilmDetails implements FilmDetails {
       required final double? filmKinopoiskRating,
       required final String filmLabels,
       required final String filmTrailerLink,
-      required final String filmPosterLink}) = _$_FilmDetails;
+      required final String filmPosterLink,
+      final String? filmBannerBgLink,
+      final String? filmBannerTitleLink}) = _$_FilmDetails;
 
   factory _FilmDetails.fromJson(Map<String, dynamic> json) =
       _$_FilmDetails.fromJson;
@@ -326,6 +366,10 @@ abstract class _FilmDetails implements FilmDetails {
   String get filmTrailerLink;
   @override
   String get filmPosterLink;
+  @override
+  String? get filmBannerBgLink;
+  @override
+  String? get filmBannerTitleLink;
   @override
   @JsonKey(ignore: true)
   _$$_FilmDetailsCopyWith<_$_FilmDetails> get copyWith =>
