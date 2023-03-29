@@ -1,8 +1,11 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../common_widgets/logo.dart';
 import '../../../../common_widgets/responsive.dart';
 import '../../../../common_widgets/responsive_center.dart';
+
+part './navigation_desktop_nav_item.dart';
 
 class NavigationDesktop extends StatelessWidget {
   final Widget body;
@@ -60,11 +63,11 @@ class NavigationDesktop extends StatelessWidget {
                       ),
                     ),
                     gapSmall,
-                    const Center(child: Text('Телеканалы')),
+                    const NavigationDesktopItem(title: 'Телеканалы'),
                     gapSmall,
-                    const Center(child: Text('Фильмы')),
+                    const NavigationDesktopItem(title: 'Фильмы'),
                     gapSmall,
-                    const Center(child: Text('Сериалы')),
+                    const NavigationDesktopItem(title: 'Сериалы'),
                   ],
                 ),
                 Row(
@@ -84,7 +87,7 @@ class NavigationDesktop extends StatelessWidget {
                         Icons.person,
                       ),
                     ),
-                    Text('Войти')
+                    NavigationDesktopItem(title: 'Войти'),
                   ],
                 ),
               ],
