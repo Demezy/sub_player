@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../common_widgets/animated_horizontal_scroll_view.dart';
 import '../../details/domain/film_details.dart';
 import '../data/film_repository.dart';
+import 'widgets/loading_element_stub.dart';
 
 part './widgets/see_all_button.dart';
 part 'widgets/banner_film.dart';
@@ -20,127 +21,129 @@ class MainPage extends ConsumerWidget {
     final recommendedFilms = ref.watch(recommendedFilmsProvider);
 
     return ListView(
-      children:
-        [
-          bannerFilms.when(
-            data: (films) => AnimatedHorizontalListView(
-              height: 300,
-              itemWidth: 160,
-              children: films.isEmpty
-                  ? const [
-                      Center(
-                        child: Text('Oops.. Nothing to show.'),
-                      )
-                    ]
-                  : [
-                      ...films
-                          .map(
-                            (film) => CardFilm(
-                              film: film,
-                            ),
-                          )
-                          .toList()
-                    ],
-            ),
-            error: (_, __) => Container(
-              color: Colors.red[200],
-              child: Center(
-                child: Text(
-                  'error',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(color: Colors.amber),
-                ),
+      children: [
+        bannerFilms.when(
+          data: (films) => AnimatedHorizontalListView(
+            height: 300,
+            itemWidth: 160,
+            children: films.isEmpty
+                ? const [
+                    Center(
+                      child: Text('Oops.. Nothing to show.'),
+                    )
+                  ]
+                : [
+                    ...films
+                        .map(
+                          (film) => CardFilm(
+                            film: film,
+                          ),
+                        )
+                        .toList()
+                  ],
+          ),
+          error: (_, __) => Container(
+            color: Colors.red[200],
+            child: Center(
+              child: Text(
+                'error',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(color: Colors.amber),
               ),
             ),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
           ),
-          SectionHeading(
-            title: 'Популярно сейчас',
-            onPressed: () {},
+          loading: () => const LoadingElementsStub(
+            height: 300,
+            width: 160,
           ),
-          //  popular now films
-          popularFilms.when(
-            data: (films) => AnimatedHorizontalListView(
-              height: 300,
-              itemWidth: 160,
-              children: films.isEmpty
-                  ? const [
-                      Center(
-                        child: Text('Oops.. Nothing to show.'),
-                      )
-                    ]
-                  : [
-                      ...films
-                          .map(
-                            (film) => CardFilm(
-                              film: film,
-                            ),
-                          )
-                          .toList()
-                    ],
-            ),
-            error: (_, __) => Container(
-              color: Colors.red[200],
-              child: Center(
-                child: Text(
-                  'error',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(color: Colors.amber),
-                ),
+        ),
+        SectionHeading(
+          title: 'Популярно сейчас',
+          onPressed: () {},
+        ),
+        //  popular now films
+        popularFilms.when(
+          data: (films) => AnimatedHorizontalListView(
+            height: 300,
+            itemWidth: 160,
+            children: films.isEmpty
+                ? const [
+                    Center(
+                      child: Text('Oops.. Nothing to show.'),
+                    )
+                  ]
+                : [
+                    ...films
+                        .map(
+                          (film) => CardFilm(
+                            film: film,
+                          ),
+                        )
+                        .toList()
+                  ],
+          ),
+          error: (_, __) => Container(
+            color: Colors.red[200],
+            child: Center(
+              child: Text(
+                'error',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(color: Colors.amber),
               ),
             ),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
           ),
-          SectionHeading(
-            title: 'Рекомендуем',
-            onPressed: () {},
+          loading: () => const LoadingElementsStub(
+            height: 300,
+            width: 160,
           ),
-          // recommended films
-          recommendedFilms.when(
-            data: (films) => AnimatedHorizontalListView(
-              height: 300,
-              itemWidth: 160,
-              children: films.isEmpty
-                  ? const [
-                      Center(
-                        child: Text('Oops.. Nothing to show.'),
-                      )
-                    ]
-                  : [
-                      ...films
-                          .map(
-                            (film) => CardFilm(
-                              film: film,
-                            ),
-                          )
-                          .toList()
-                    ],
-            ),
-            error: (_, __) => Container(
-              color: Colors.red[200],
-              child: Center(
-                child: Text(
-                  'error',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(color: Colors.amber),
-                ),
+        ),
+        SectionHeading(
+          title: 'Рекомендуем',
+          onPressed: () {},
+        ),
+        // recommended films
+        recommendedFilms.when(
+          data: (films) => AnimatedHorizontalListView(
+            height: 300,
+            itemWidth: 160,
+            children: films.isEmpty
+                ? const [
+                    Center(
+                      child: Text('Oops.. Nothing to show.'),
+                    )
+                  ]
+                : [
+                    ...films
+                        .map(
+                          (film) => CardFilm(
+                            film: film,
+                          ),
+                        )
+                        .toList()
+                  ],
+          ),
+          error: (_, __) => Container(
+            color: Colors.red[200],
+            child: Center(
+              child: Text(
+                'error',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(color: Colors.amber),
               ),
             ),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
           ),
-        ],
+          loading: () => const LoadingElementsStub(
+            height: 300,
+            width: 160,
+          ),
+        ),
+      ],
     );
   }
 }
