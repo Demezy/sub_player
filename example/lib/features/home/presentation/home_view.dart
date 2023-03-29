@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,12 +33,15 @@ class MainPage extends ConsumerWidget {
     final popularFilms = ref.watch(popularFilmsProvider);
     final recommendedFilms = ref.watch(recommendedFilmsProvider);
 
+    final bannerWidth = min(MediaQuery.of(context).size.width, 900)*0.95;
+    final bannerHeight = bannerWidth / 1.6;
+
     return ListView(
       children: [
         bannerFilms.when(
           data: (films) => AnimatedHorizontalListView(
-            height: 300,
-            itemWidth: 160,
+            height: bannerHeight,
+            itemWidth: bannerWidth,
             children: films.isEmpty
                 ? const [
                     Center(
@@ -46,7 +51,7 @@ class MainPage extends ConsumerWidget {
                 : [
                     ...films
                         .map(
-                          (film) => CardFilm(
+                          (film) => BannerFilm(
                             film: film,
                           ),
                         )
@@ -65,9 +70,9 @@ class MainPage extends ConsumerWidget {
               ),
             ),
           ),
-          loading: () => const LoadingElementsStub(
-            height: 300,
-            width: 160,
+          loading: () => LoadingElementsStub(
+            height: bannerHeight,
+            width: bannerWidth,
           ),
         ),
         SectionHeading(
