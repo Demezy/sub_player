@@ -17,6 +17,8 @@ _$_FilmDetails _$$_FilmDetailsFromJson(Map<String, dynamic> json) =>
       filmLabels: json['filmLabels'] as String,
       filmTrailerLink: json['filmTrailerLink'] as String,
       filmPosterLink: json['filmPosterLink'] as String,
+      filmBannerBgLink: json['filmBannerBgLink'] as String?,
+      filmBannerTitleLink: json['filmBannerTitleLink'] as String?,
     );
 
 Map<String, dynamic> _$$_FilmDetailsToJson(_$_FilmDetails instance) =>
@@ -30,4 +32,6 @@ Map<String, dynamic> _$$_FilmDetailsToJson(_$_FilmDetails instance) =>
       'filmLabels': instance.filmLabels,
       'filmTrailerLink': instance.filmTrailerLink,
       'filmPosterLink': instance.filmPosterLink,
+      'filmBannerBgLink': instance.filmBannerBgLink,
+      'filmBannerTitleLink': instance.filmBannerTitleLink,
     };

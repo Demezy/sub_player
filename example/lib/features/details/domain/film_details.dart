@@ -16,6 +16,8 @@ class FilmDetails with _$FilmDetails {
     required String filmLabels,
     required String filmTrailerLink,
     required String filmPosterLink,
+    String? filmBannerBgLink,
+    String? filmBannerTitleLink,
   }) = _FilmDetails;
 
   factory FilmDetails.fromJson(Map<String, Object?> json) =>
