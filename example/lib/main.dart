@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 
@@ -29,18 +30,23 @@ void main() async {
   setup();
   runApp(
     ProviderScope(
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        themeMode: ThemeMode.dark,
-        theme: AppTheme.dark,
-        darkTheme: AppTheme.dark,
-        routes: <String, WidgetBuilder>{
-          '/description': (BuildContext context) => const DetailsView(),
-          '/player': (BuildContext context) => LandscapePlayerPage(
-              ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>
-          ),
+      child: Shortcuts(
+        shortcuts: <LogicalKeySet, Intent>{
+          LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
         },
-        home: const MyApp(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          themeMode: ThemeMode.dark,
+          theme: AppTheme.dark,
+          darkTheme: AppTheme.dark,
+          routes: <String, WidgetBuilder>{
+            '/description': (BuildContext context) => const DetailsView(),
+            '/player': (BuildContext context) => LandscapePlayerPage(
+                ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>
+            ),
+          },
+          home: const MyApp(),
+        ),
       ),
     ),
   );

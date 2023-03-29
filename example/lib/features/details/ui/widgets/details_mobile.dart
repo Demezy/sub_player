@@ -231,8 +231,13 @@ class _DetailsMobileViewState extends ConsumerState<DetailsMobileView> {
                     child: Column(
                       children: [
                         InkWell(
-                          onTap: () => Navigator.pushNamed(context, '/player',
-                              arguments: film.id),
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            '/player',
+                            arguments: {
+                              'filmId': film.id,
+                            },
+                          ),
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),

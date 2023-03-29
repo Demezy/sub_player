@@ -15,7 +15,7 @@ class FilmRepository {
   Future<Films> getBigBanner() async {
     late final Response<List> response;
     try {
-      response = await _dio.get<List>('/banners/');
+      response = await _dio.get<List>('/movies/banners/');
     } on DioError {
       throw UnimplementedError();
     }
@@ -47,7 +47,8 @@ class FilmRepository {
   Future<Films> getRecommended() async {
     late final Response<List> response;
     try {
-      response = await _dio.get<List>('/recommended/');
+      print('/movies/recommended/');
+      response = await _dio.get<List>('/movies/recommended/');
     } on DioError {
       throw UnimplementedError();
     }

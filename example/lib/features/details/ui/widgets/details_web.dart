@@ -42,10 +42,16 @@ class DetailsWebView extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.width * .2,
                             width: MediaQuery.of(context).size.width * .14,
-                            color: Colors.green,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                film.filmPosterLink,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                           const SizedBox(
                             width: 20,
@@ -59,7 +65,7 @@ class DetailsWebView extends StatelessWidget {
                                 SizedBox(
                                   width: MediaQuery.of(context).size.width * .5,
                                   child: Text(
-                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
+                                    film.filmTitle,
                                     softWrap: true,
                                     style: Theme.of(context)
                                         .textTheme
@@ -97,12 +103,15 @@ class DetailsWebView extends StatelessWidget {
                                           ),
                                         ),
                                         TextSpan(
-                                            text: ' 9.4  ',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge),
+                                          text:
+                                              ' ${film.filmRating.toString()} ',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge,
+                                        ),
                                         TextSpan(
-                                          text: 'IMBd 5.5  ',
+                                          text:
+                                              'IMDB ${film.filmIMBdRating.toString()} | Kinopoisk ${film.filmKinopoiskRating.toString()} ',
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall
@@ -124,7 +133,13 @@ class DetailsWebView extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width *
                                           .1,
                                       child: ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () => Navigator.pushNamed(
+                                          context,
+                                          '/player',
+                                          arguments: {
+                                            'filmId': film.id,
+                                          },
+                                        ),
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text('Смотреть'),
@@ -142,7 +157,8 @@ class DetailsWebView extends StatelessWidget {
                                       ),
                                       padding: const EdgeInsets.all(8),
                                       child: const Icon(
-                                          Icons.bookmark_add_outlined),
+                                        Icons.bookmark_add_outlined,
+                                      ),
                                     ),
                                     const SizedBox(
                                       width: 12.0,
@@ -171,7 +187,7 @@ class DetailsWebView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: ReadMoreText(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                        film.filmDescription,
                         trimLines: 5,
                         colorClickableText: Theme.of(context).primaryColor,
                         trimMode: TrimMode.Line,
