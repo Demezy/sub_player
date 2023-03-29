@@ -188,9 +188,7 @@ class AppTheme {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0),
-        borderSide: BorderSide(
-          color: Colors.white.withOpacity(.5),
-        ),
+        borderSide: BorderSide.none,
       ),
       suffixIconColor: Colors.white.withOpacity(.3),
     ),
@@ -257,7 +255,8 @@ class AppTheme {
     // grey not black
     //canvasColor: const Color(0xff2C2C2C),
     scaffoldBackgroundColor: const Color(0xFF011423),
-    cardColor: const Color(0xff424242),
+    // for loading cards
+    cardColor: const  Color(0xFF17273e),
     dividerColor: const Color(0x1fffffff),
     highlightColor: const Color(0x40cccccc),
     splashColor: const Color(0x40cccccc),
@@ -395,12 +394,13 @@ class AppTheme {
       labelStyle: TextStyle(
         color: Colors.white.withOpacity(.5),
       ),
-      hintStyle: TextStyle(color: Colors.white.withOpacity(.6)),
+      hintStyle: const TextStyle(color: Color(0xff7b8ba2)),
       errorStyle: const TextStyle(color: Colors.redAccent),
       // hasFloatingPlaceholder: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      prefixIconColor: const Color(0xff7b8ba2),
       prefixStyle: const TextStyle(
-        color: Color(0xff969CAE),
+        color: Color(0xff7b8ba2),
         // color: Color(0xffffffff),
         fontWeight: FontWeight.w400,
         fontStyle: FontStyle.normal,
@@ -416,7 +416,7 @@ class AppTheme {
         fontStyle: FontStyle.normal,
       ),
       filled: true,
-      fillColor: const Color(0xFF1D1C23),
+      fillColor: const Color(0xFF17273e),
 
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -429,9 +429,7 @@ class AppTheme {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0),
-        borderSide: BorderSide(
-          color: Colors.white.withOpacity(.5),
-        ),
+        borderSide: BorderSide.none,
       ),
       suffixIconColor: Colors.white.withOpacity(.3),
     ),
