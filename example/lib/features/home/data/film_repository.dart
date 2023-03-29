@@ -64,14 +64,14 @@ class FilmRepository {
     late final Response<List> response;
     try {
       response = await _dio.get<List>('/movies/$filmId/qualities');
-    } on DioError {
+    } on DioError catch (e) {
       throw UnimplementedError();
     }
     if (response.data == null) {
       throw UnimplementedError();
     }
 
-    return response.data as List<String>;
+    return (response.data as List).map((e) => e as String).toList();
   }
 }
 
@@ -90,6 +90,6 @@ final recommendedFilmsProvider = FutureProvider<Films>(
   (ref) => ref.read(filmRepositoryProvider).getRecommended(),
 );
 
-final filmQualitiesProvider = FutureProvider.autoDispose.family<List<String>, int>(
-    (ref, filmId) => ref.read(filmRepositoryProvider).getQualities(filmId)
+final filmQualitiesProvider = FutureProvider.family.autoDispose<List<String>, int>(
+    (ref, filmId) => ref.read(filmRepositoryProvider).getQualities(filmId),
 );

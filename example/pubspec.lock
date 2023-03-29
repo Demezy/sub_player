@@ -1060,6 +1060,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.15"
+  video_player_web_hls:
+    dependency: "direct main"
+    description:
+      name: video_player_web_hls
+      sha256: "5c4e49a9bf451058f4762fa811799e013604f6c6a6d4ceeb1f6ce199f89ea291"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+2"
   wakelock:
     dependency: "direct main"
     description:

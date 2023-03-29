@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -107,6 +108,19 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
                     ? _PlayerOverlay(
                         film: widget.arguments,
                         controller: controller,
+                        onQualityChanged: (quality) {
+                          final position = controller.value.position;
+                          controller.dispose();
+                          controller = VideoPlayerController.network(
+                            '${Consts.baseUrl}movies/${widget.arguments.id}/watch?quality=$quality',
+                          )
+                            ..addListener(() => setState(() {}))
+                            ..initialize().then(
+                              (_) => controller
+                                ..play()
+                                ..seekTo(position),
+                            );
+                        },
                       )
                     : const SizedBox.shrink(),
               )
@@ -120,11 +134,13 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
 
 class _PlayerOverlay extends StatelessWidget {
   final FilmDetails film;
-  final VideoPlayerController controller;
+  VideoPlayerController controller;
+  Function(String?) onQualityChanged;
 
-  const _PlayerOverlay({
+  _PlayerOverlay({
     required this.film,
     required this.controller,
+    required this.onQualityChanged,
     super.key,
   });
 
@@ -211,37 +227,36 @@ class _PlayerOverlay extends StatelessWidget {
                 _FocusIcon(
                   CupertinoIcons.arrow_turn_up_left,
                   onTap: () {
-                    controller
-                      ..play()
-                      ..seekTo(
-                        Duration(
-                          seconds: max(
-                            controller.value.position.inSeconds - 30,
-                            0,
-                          ),
+                    controller.seekTo(
+                      Duration(
+                        seconds: max(
+                          controller.value.position.inSeconds - 30,
+                          0,
                         ),
-                      );
+                      ),
+                    );
                   },
                 ),
                 const SizedBox(width: 20),
                 _FocusIcon(
                   CupertinoIcons.arrow_turn_up_right,
                   onTap: () {
-                    controller
-                      ..play()
-                      ..seekTo(
-                        Duration(
-                          seconds: min(
-                            controller.value.position.inSeconds + 30,
-                            controller.value.duration.inSeconds,
-                          ),
+                    controller.seekTo(
+                      Duration(
+                        seconds: min(
+                          controller.value.position.inSeconds + 30,
+                          controller.value.duration.inSeconds,
                         ),
-                      );
+                      ),
+                    );
                   },
                 ),
                 const Spacer(),
+                const _AvatarsDrawer(),
+                const SizedBox(width: 20),
                 _QualityDrawer(
                   film.id,
+                  onQualityChanged,
                 ),
               ],
             ),
@@ -254,80 +269,200 @@ class _PlayerOverlay extends StatelessWidget {
 
 class _QualityDrawer extends ConsumerStatefulWidget {
   final int filmId;
+  final Function(String) onQualityChanged;
 
-  const _QualityDrawer(this.filmId);
+  const _QualityDrawer(this.filmId, this.onQualityChanged);
 
   @override
   ConsumerState<_QualityDrawer> createState() => _QualityDrawerState();
 }
 
 class _QualityDrawerState extends ConsumerState<_QualityDrawer> {
-  bool drawerVisible = false;
+  ValueNotifier<bool> drawerVisible = ValueNotifier(false);
   String selectedQuality = 'auto';
 
   @override
   Widget build(BuildContext context) {
     final qualitiesFuture = ref.watch(filmQualitiesProvider(widget.filmId));
 
-    return SizedOverflowBox(
-      size: const Size(36, 36),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          _FocusIcon(
-            CupertinoIcons.recordingtape,
-            onTap: () {
-              setState(() {
-                drawerVisible = true;
-              });
-            },
-          ),
-          Positioned(
-            bottom: 56,
-            right: 0,
-            child: SizedBox(
-              width: 300,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.black38,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: qualitiesFuture.when(
-                    data: (qualities) {
-                      return Row(
-                        children: [
-                          const Text('Video quality:'),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          for (var quality in qualities)
-                            _FocusItem(
-                              quality,
-                              autofocus: qualities.indexOf(quality) == 0,
-                              checked: quality == selectedQuality,
-                              onTap: () {
-                                setState(() {
-                                  selectedQuality = quality;
-                                });
-                              },
-                            )
-                        ],
-                      );
-                    },
-                    error: (err, trace) => const CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
-                    loading: () => const CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+    return WillPopScope(
+      onWillPop: () {
+        if (drawerVisible.value) {
+          drawerVisible.value = false;
+          return Future.value(false);
+        }
+
+        return Future.value(true);
+      },
+      child: SizedOverflowBox(
+        size: const Size(36, 36),
+        child: Stack(
+          // fit: StackFit.expand,
+          clipBehavior: Clip.none,
+          children: [
+            _FocusIcon(
+              CupertinoIcons.recordingtape,
+              onTap: () {
+                setState(() {
+                  drawerVisible.value = true;
+                });
+              },
             ),
-          ),
-        ],
+            ValueListenableBuilder(
+                valueListenable: drawerVisible,
+                builder: (context, visible, _) => visible
+                    ? Positioned(
+                        bottom: 56,
+                        right: 0,
+                        child: SizedBox(
+                          width: 300,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: qualitiesFuture.when(
+                                data: (qualities) {
+                                  return Column(
+                                    children: [
+                                      const Text('Video quality:'),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      for (var quality in qualities)
+                                        _FocusItem(
+                                          quality,
+                                          autofocus:
+                                              qualities.indexOf(quality) == 0,
+                                          checked: quality == selectedQuality,
+                                          onTap:
+                                              widget.onQualityChanged(quality),
+                                        )
+                                    ],
+                                  );
+                                },
+                                error: (err, trace) => const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                loading: () => const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : const SizedBox.shrink())
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AvatarsDrawer extends ConsumerStatefulWidget {
+  const _AvatarsDrawer();
+
+  @override
+  ConsumerState<_AvatarsDrawer> createState() => _AvatarsDrawerState();
+}
+
+class _AvatarsDrawerState extends ConsumerState<_AvatarsDrawer> {
+  ValueNotifier<bool> drawerVisible = ValueNotifier(false);
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () {
+        if (drawerVisible.value) {
+          drawerVisible.value = false;
+          return Future.value(false);
+        }
+
+        return Future.value(true);
+      },
+      child: SizedOverflowBox(
+        size: const Size(36, 36),
+        child: Stack(
+          // fit: StackFit.expand,
+          clipBehavior: Clip.none,
+          children: [
+            _FocusIcon(
+              CupertinoIcons.captions_bubble,
+              onTap: () {
+                drawerVisible.value = true;
+              },
+            ),
+            ValueListenableBuilder(
+                valueListenable: drawerVisible,
+                builder: (context, visible, _) => visible
+                    ? Positioned(
+                        bottom: 56,
+                        right: -100,
+                        child: SizedBox(
+                          width: 200,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                children: [
+                                  const Text('Choose personality:'),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        padding: const EdgeInsets.all(8),
+                                        color: Colors.primaries[0],
+                                        child: SvgPicture.asset(
+                                            'assets/svg/ava1.svg'),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        padding: const EdgeInsets.all(8),
+                                        color: Colors.primaries[1],
+                                        child: SvgPicture.asset(
+                                            'assets/svg/ava2.svg'),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        padding: const EdgeInsets.all(8),
+                                        color: Colors.primaries[2],
+                                        child: SvgPicture.asset(
+                                            'assets/svg/ava3.svg'),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : const SizedBox.shrink())
+          ],
+        ),
       ),
     );
   }
@@ -366,20 +501,30 @@ class _FocusItemState extends State<_FocusItem> {
       },
       child: DecoratedBox(
         decoration: BoxDecoration(
-            border:
-                Border.all(color: focused ? Colors.white : Colors.transparent),
-            borderRadius: BorderRadius.circular(8.0)),
+          border:
+              Border.all(color: focused ? Colors.white : Colors.transparent),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
               if (widget.checked ?? false)
-                const Icon(
-                  CupertinoIcons.check_mark,
-                  size: 20,
+                const Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: Icon(
+                    CupertinoIcons.check_mark,
+                    size: 20,
+                  ),
                 ),
               Expanded(
-                child: Text(widget.text),
+                child: SizedBox(
+                  height: 20,
+                  child: Text(
+                    widget.text,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
               )
             ],
           ),
