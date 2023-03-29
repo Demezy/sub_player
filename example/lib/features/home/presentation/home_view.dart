@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -17,8 +18,18 @@ part 'widgets/card_film.dart';
 class MainPage extends ConsumerWidget {
   const MainPage({super.key});
 
+  Future setOrientation() async {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    setOrientation();
     final bannerFilms = ref.watch(bigBannerFilmsProvider);
     final popularFilms = ref.watch(popularFilmsProvider);
     final recommendedFilms = ref.watch(recommendedFilmsProvider);
@@ -47,21 +58,24 @@ class MainPage extends ConsumerWidget {
               [
                 bannerFilms.when(
                   data: (films) => AnimatedHorizontalListView(
-                      height: 300,
-                      itemWidth: 160,
-                      children: films.isEmpty
-                          ? const [
-                              Center(
-                                child: Text('Oops.. Nothing to show.'),
-                              )
-                            ]
-                          : [
-                              ...films
-                                  .map((film) => CardFilm(
-                                        film: film,
-                                      ),)
-                                  .toList()
-                            ],),
+                    height: 300,
+                    itemWidth: 160,
+                    children: films.isEmpty
+                        ? const [
+                            Center(
+                              child: Text('Oops.. Nothing to show.'),
+                            )
+                          ]
+                        : [
+                            ...films
+                                .map(
+                                  (film) => CardFilm(
+                                    film: film,
+                                  ),
+                                )
+                                .toList()
+                          ],
+                  ),
                   error: (_, __) => Container(
                     color: Colors.red[200],
                     child: Center(
@@ -95,9 +109,11 @@ class MainPage extends ConsumerWidget {
                           ]
                         : [
                             ...films
-                                .map((film) => CardFilm(
-                                      film: film,
-                                    ),)
+                                .map(
+                                  (film) => CardFilm(
+                                    film: film,
+                                  ),
+                                )
                                 .toList()
                           ],
                   ),
@@ -134,9 +150,11 @@ class MainPage extends ConsumerWidget {
                           ]
                         : [
                             ...films
-                                .map((film) => CardFilm(
-                                      film: film,
-                                    ),)
+                                .map(
+                                  (film) => CardFilm(
+                                    film: film,
+                                  ),
+                                )
                                 .toList()
                           ],
                   ),
