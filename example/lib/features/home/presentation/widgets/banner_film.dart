@@ -3,7 +3,7 @@ part of '../home_view.dart';
 class BannerFilm extends StatelessWidget {
   final FilmDetails film;
 
-  BannerFilm({super.key, required this.film});
+  const BannerFilm({super.key, required this.film});
 
   @override
   Widget build(BuildContext context) {

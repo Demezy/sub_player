@@ -24,8 +24,8 @@ class GradientWidget extends StatelessWidget {
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    stops: const [ 0.6, 0.7, 1.0],
-                  )),
+                    stops: const [0.6, 0.7, 1.0],
+                  ),),
                 ),
               )
             : const SizedBox.shrink(),

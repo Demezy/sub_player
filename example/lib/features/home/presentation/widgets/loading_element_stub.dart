@@ -21,9 +21,9 @@ class LoadingElementsStub extends HookWidget {
       duration: const Duration(seconds: 1),
     )..repeat(reverse: true);
     final opacity = useAnimation<double>(
-        Tween<double>(begin: 1, end: 0.2).animate(opacityController));
+        Tween<double>(begin: 1, end: 0.2).animate(opacityController),);
     return Shimmer.fromColors(
-      baseColor:Theme.of(context).cardColor,
+      baseColor: Theme.of(context).cardColor,
       highlightColor: const Color(0xffaaaaaa),
       child: AnimatedHorizontalListView(
         height: height,
@@ -31,7 +31,7 @@ class LoadingElementsStub extends HookWidget {
         children: List<Widget>.generate(
           childrenCount,
           (index) => Container(
-          color: Colors.black,
+            color: Colors.black,
           ),
         ),
       ),

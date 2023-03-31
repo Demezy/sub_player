@@ -2,7 +2,7 @@
 <manifest package="xyz.amoriodi.example" version="1.0.0" api-version="4.0" xmlns="http://tizen.org/ns/packages">
     <profile name="common"/>
     <ui-application appid="xyz.amoriodi.example" exec="Runner.dll" type="dotnet" multiple="false" nodisplay="false" taskmanage="true">
-        <label>example</label>
+        <label>KITW[o] – KION[e]</label>
         <icon>ic_launcher.png</icon>
         <metadata key="http://tizen.org/metadata/prefer_dotnet_aot" value="true"/>
     </ui-application>

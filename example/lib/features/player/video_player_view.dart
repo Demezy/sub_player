@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:example/features/home/data/film_repository.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +11,7 @@ import 'package:wakelock/wakelock.dart';
 
 import '../../config/constants.dart';
 import '../details/domain/film_details.dart';
+import '../home/data/film_repository.dart';
 
 class LandscapePlayerPage extends StatefulWidget {
   const LandscapePlayerPage(this.arguments, {super.key});
@@ -96,35 +97,51 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
           return KeyEventResult.ignored;
         },
         child: Material(
-          child: Stack(
-            children: [
-              AspectRatio(
-                aspectRatio: controller.value.aspectRatio,
-                child: VideoPlayer(controller),
-              ),
-              ValueListenableBuilder(
-                valueListenable: overlayVisible,
-                builder: (context, visible, _) => visible
-                    ? _PlayerOverlay(
-                        film: widget.arguments,
-                        controller: controller,
-                        onQualityChanged: (quality) {
-                          final position = controller.value.position;
-                          controller.dispose();
-                          controller = VideoPlayerController.network(
-                            '${Consts.baseUrl}movies/${widget.arguments.id}/watch?quality=$quality',
-                          )
-                            ..addListener(() => setState(() {}))
-                            ..initialize().then(
-                              (_) => controller
-                                ..play()
-                                ..seekTo(position),
-                            );
-                        },
-                      )
-                    : const SizedBox.shrink(),
-              )
-            ],
+          color: Colors.black,
+          child: GestureDetector(
+            onTap: () {
+              if (!overlayVisible.value) {
+                overlayVisible.value = true;
+                controller.pause();
+              }
+            },
+            child: Stack(
+              children: [
+                AbsorbPointer(
+                  child: Center(
+                    child: AspectRatio(
+                      aspectRatio: controller.value.aspectRatio,
+                      child: VideoPlayer(controller),
+                    ),
+                  ),
+                ),
+                ValueListenableBuilder(
+                  valueListenable: overlayVisible,
+                  builder: (context, visible, _) => visible
+                      ? _PlayerOverlay(
+                          film: widget.arguments,
+                          controller: controller,
+                          onClose: () {
+                            overlayVisible.value = false;
+                          },
+                          onQualityChanged: (quality) {
+                            final position = controller.value.position;
+                            controller.dispose();
+                            controller = VideoPlayerController.network(
+                              '${Consts.baseUrl}movies/${widget.arguments.id}/watch?quality=$quality',
+                            )
+                              ..addListener(() => setState(() {}))
+                              ..initialize().then(
+                                (_) => controller
+                                  ..play()
+                                  ..seekTo(position),
+                              );
+                          },
+                        )
+                      : const SizedBox.shrink(),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -136,12 +153,13 @@ class _PlayerOverlay extends StatelessWidget {
   final FilmDetails film;
   VideoPlayerController controller;
   Function(String?) onQualityChanged;
+  Function() onClose;
 
   _PlayerOverlay({
     required this.film,
     required this.controller,
     required this.onQualityChanged,
-    super.key,
+    required this.onClose,
   });
 
   @override
@@ -196,6 +214,7 @@ class _PlayerOverlay extends StatelessWidget {
                       controller.pause();
                     } else {
                       controller.play();
+                      onClose();
                     }
                   },
                 );
@@ -304,61 +323,62 @@ class _QualityDrawerState extends ConsumerState<_QualityDrawer> {
               CupertinoIcons.recordingtape,
               onTap: () {
                 setState(() {
-                  drawerVisible.value = true;
+                  drawerVisible.value = !drawerVisible.value;
                 });
               },
             ),
             ValueListenableBuilder(
-                valueListenable: drawerVisible,
-                builder: (context, visible, _) => visible
-                    ? Positioned(
-                        bottom: 56,
-                        right: 0,
-                        child: SizedBox(
-                          width: 300,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Colors.black54,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: qualitiesFuture.when(
-                                data: (qualities) {
-                                  return Column(
-                                    children: [
-                                      const Text('Video quality:'),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      for (var quality in qualities)
-                                        _FocusItem(
-                                          quality,
-                                          autofocus:
-                                              qualities.indexOf(quality) == 0,
-                                          checked: quality == selectedQuality,
-                                          onTap:
-                                              widget.onQualityChanged(quality),
-                                        )
-                                    ],
-                                  );
-                                },
-                                error: (err, trace) => const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
+              valueListenable: drawerVisible,
+              builder: (context, visible, _) => visible
+                  ? Positioned(
+                      bottom: 56,
+                      right: 0,
+                      child: SizedBox(
+                        width: 300,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: qualitiesFuture.when(
+                              data: (qualities) {
+                                return Column(
+                                  children: [
+                                    const Text('Video quality:'),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    for (var quality in qualities)
+                                      _FocusItem(
+                                        quality,
+                                        autofocus:
+                                            qualities.indexOf(quality) == 0,
+                                        checked: quality == selectedQuality,
+                                        onTap: () =>
+                                            widget.onQualityChanged(quality),
+                                      )
+                                  ],
+                                );
+                              },
+                              error: (err, trace) => const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
                                 ),
-                                loading: () => const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
+                              ),
+                              loading: () => const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      )
-                    : const SizedBox.shrink())
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            )
           ],
         ),
       ),
@@ -396,71 +416,75 @@ class _AvatarsDrawerState extends ConsumerState<_AvatarsDrawer> {
             _FocusIcon(
               CupertinoIcons.captions_bubble,
               onTap: () {
-                drawerVisible.value = true;
+                drawerVisible.value = !drawerVisible.value;
               },
             ),
             ValueListenableBuilder(
-                valueListenable: drawerVisible,
-                builder: (context, visible, _) => visible
-                    ? Positioned(
-                        bottom: 56,
-                        right: -100,
-                        child: SizedBox(
-                          width: 200,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Colors.black54,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: Column(
-                                children: [
-                                  const Text('Choose personality:'),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        padding: const EdgeInsets.all(8),
-                                        color: Colors.primaries[0],
-                                        child: SvgPicture.asset(
-                                            'assets/svg/ava1.svg'),
+              valueListenable: drawerVisible,
+              builder: (context, visible, _) => visible
+                  ? Positioned(
+                      bottom: 56,
+                      right: 0,
+                      child: SizedBox(
+                        width: 200,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                const Text('Choose personality:'),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      padding: const EdgeInsets.all(8),
+                                      color: Colors.primaries[0],
+                                      child: SvgPicture.asset(
+                                        'assets/svg/ava1.svg',
                                       ),
-                                      const SizedBox(
-                                        width: 20,
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      padding: const EdgeInsets.all(8),
+                                      color: Colors.primaries[1],
+                                      child: SvgPicture.asset(
+                                        'assets/svg/ava2.svg',
                                       ),
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        padding: const EdgeInsets.all(8),
-                                        color: Colors.primaries[1],
-                                        child: SvgPicture.asset(
-                                            'assets/svg/ava2.svg'),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      padding: const EdgeInsets.all(8),
+                                      color: Colors.primaries[2],
+                                      child: SvgPicture.asset(
+                                        'assets/svg/ava3.svg',
                                       ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        padding: const EdgeInsets.all(8),
-                                        color: Colors.primaries[2],
-                                        child: SvgPicture.asset(
-                                            'assets/svg/ava3.svg'),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
                           ),
                         ),
-                      )
-                    : const SizedBox.shrink())
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            )
           ],
         ),
       ),
@@ -479,7 +503,6 @@ class _FocusItem extends StatefulWidget {
     this.checked,
     this.autofocus,
     this.onTap,
-    super.key,
   });
 
   @override
@@ -545,7 +568,6 @@ class _FocusIcon extends StatefulWidget {
     this.autofocus,
     this.onTap,
     this.size,
-    super.key,
   });
 
   @override
@@ -559,10 +581,17 @@ class _FocusIconState extends State<_FocusIcon> {
   Widget build(BuildContext context) {
     return InkWell(
       autofocus: widget.autofocus ?? false,
+      focusColor: Colors.transparent,
+      hoverColor: Colors.transparent,
       onTap: widget.onTap,
+      onHover: (hovered) {
+        setState(() {
+          focused = hovered;
+        });
+      },
       onFocusChange: (newFocus) {
         setState(() {
-          focused = newFocus;
+          focused = newFocus && !kIsWeb;
         });
       },
       child: DecoratedBox(

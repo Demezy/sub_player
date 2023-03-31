@@ -25,7 +25,7 @@ class _DetailsMobileViewState extends ConsumerState<DetailsMobileView> {
 
   Future setOrientation() async {
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+        overlays: SystemUiOverlay.values,);
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitDown,
       DeviceOrientation.portraitUp,

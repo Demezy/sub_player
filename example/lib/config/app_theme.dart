@@ -256,7 +256,7 @@ class AppTheme {
     //canvasColor: const Color(0xff2C2C2C),
     scaffoldBackgroundColor: const Color(0xFF011423),
     // for loading cards
-    cardColor: const  Color(0xFF17273e),
+    cardColor: const Color(0xFF17273e),
     dividerColor: const Color(0x1fffffff),
     highlightColor: const Color(0x40cccccc),
     splashColor: const Color(0x40cccccc),

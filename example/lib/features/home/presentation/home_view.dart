@@ -19,7 +19,7 @@ class MainPage extends ConsumerWidget {
 
   Future setOrientation() async {
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+        overlays: SystemUiOverlay.values,);
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitDown,
       DeviceOrientation.portraitUp,
@@ -33,7 +33,7 @@ class MainPage extends ConsumerWidget {
     final popularFilms = ref.watch(popularFilmsProvider);
     final recommendedFilms = ref.watch(recommendedFilmsProvider);
 
-    final bannerWidth = min(MediaQuery.of(context).size.width, 900)*0.95;
+    final bannerWidth = min(MediaQuery.of(context).size.width, 900) * 0.95;
     final bannerHeight = bannerWidth / 1.6;
 
     return ListView(
@@ -101,10 +101,11 @@ class MainPage extends ConsumerWidget {
                   ],
           ),
           error: (_, __) => Container(
+            height: 200,
             color: Colors.red[200],
             child: Center(
               child: Text(
-                'error',
+                'error ${__.toString()}',
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge

@@ -13,5 +13,4 @@ class DetailsView extends StatelessWidget {
   Widget build(BuildContext context) => Responsive.isMobile(context)
       ? const DetailsMobileView()
       : const DetailsWebView();
-
 }

@@ -43,8 +43,8 @@ void main() async {
           routes: <String, WidgetBuilder>{
             '/description': (BuildContext context) => const DetailsView(),
             '/player': (BuildContext context) => LandscapePlayerPage(
-                ModalRoute.of(context)!.settings.arguments as FilmDetails,
-            ),
+                  ModalRoute.of(context)!.settings.arguments as FilmDetails,
+                ),
           },
           home: const MyApp(),
         ),

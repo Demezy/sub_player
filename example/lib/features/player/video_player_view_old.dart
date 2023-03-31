@@ -40,7 +40,7 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
 
   Future setLandscape() async {
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: []);
+        overlays: [],);
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
@@ -51,7 +51,7 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
 
   Future setOrientation() async {
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+        overlays: SystemUiOverlay.values,);
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitDown,
       DeviceOrientation.portraitUp,
