@@ -74,6 +74,8 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(controller);
+
     return WillPopScope(
       onWillPop: () {
         if (overlayVisible.value) {
@@ -115,6 +117,13 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
                     ),
                   ),
                 ),
+                if (!controller.value.isInitialized ||
+                    controller.value.isBuffering)
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
                 ValueListenableBuilder(
                   valueListenable: overlayVisible,
                   builder: (context, visible, _) => visible
@@ -126,16 +135,20 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
                           },
                           onQualityChanged: (quality) {
                             final position = controller.value.position;
-                            controller.dispose();
+                            var oldController = controller;
                             controller = VideoPlayerController.network(
                               '${Consts.baseUrl}movies/${widget.arguments.id}/watch?quality=$quality',
                             )
                               ..addListener(() => setState(() {}))
                               ..initialize().then(
-                                (_) => controller
+                                    (_) => controller
                                   ..play()
                                   ..seekTo(position),
                               );
+                            WidgetsBinding.instance.addPostFrameCallback((_) async {
+                              await oldController
+                                  .dispose(); // dispose the previous video controller
+                            });
                           },
                         )
                       : const SizedBox.shrink(),
@@ -271,7 +284,13 @@ class _PlayerOverlay extends StatelessWidget {
                   },
                 ),
                 const Spacer(),
-                const _AvatarsDrawer(),
+                _AvatarsDrawer(onQualityChanged),
+                // _FocusIcon(
+                //   CupertinoIcons.captions_bubble,
+                //   onTap: () {
+                //     onQualityChanged('out');
+                //   },
+                // ),
                 const SizedBox(width: 20),
                 _QualityDrawer(
                   film.id,
@@ -387,7 +406,9 @@ class _QualityDrawerState extends ConsumerState<_QualityDrawer> {
 }
 
 class _AvatarsDrawer extends ConsumerStatefulWidget {
-  const _AvatarsDrawer();
+  final Function(String) onQualityChanged;
+
+  const _AvatarsDrawer(this.onQualityChanged);
 
   @override
   ConsumerState<_AvatarsDrawer> createState() => _AvatarsDrawerState();
@@ -442,13 +463,19 @@ class _AvatarsDrawerState extends ConsumerState<_AvatarsDrawer> {
                                 ),
                                 Row(
                                   children: [
-                                    Container(
-                                      width: 40,
-                                      height: 40,
-                                      padding: const EdgeInsets.all(8),
-                                      color: Colors.primaries[0],
-                                      child: SvgPicture.asset(
-                                        'assets/svg/ava1.svg',
+                                    GestureDetector(
+                                      onTap: () {
+                                        drawerVisible.value = false;
+                                        widget.onQualityChanged('out');
+                                      },
+                                      child: Container(
+                                        width: 40,
+                                        height: 40,
+                                        padding: const EdgeInsets.all(8),
+                                        color: Colors.primaries[0],
+                                        child: SvgPicture.asset(
+                                          'assets/svg/ava1.svg',
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(
